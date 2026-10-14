@@ -1,0 +1,152 @@
+/* 공통 디자인 토큰 · 기본 스타일 */
+:root {
+  --bg: #ffffff;
+  --bg-subtle: #f7f7f8;
+  --bg-muted: #f0f0f2;
+  --border: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  --text: #18181b;
+  --text-secondary: #52525b;
+  --text-muted: #71717a;
+
+  --accent: #ea580c;
+  --accent-hover: #c2410c;
+  --accent-soft: #fff1e8;
+  --focus: #2563eb;
+
+  /* 심각도 */
+  --critical: #c0262d;
+  --critical-bg: #fdecec;
+  --warning: #a15c07;
+  --warning-bg: #fdf3d8;
+  --normal: #15803d;
+  --normal-bg: #e6f6ec;
+  --info: #1d4ed8;
+  --info-bg: #e8effd;
+
+  /* 고장 유형 (AI4I 2020) */
+  --mode-twf: #2563eb;
+  --mode-hdf: #ea580c;
+  --mode-pwf: #7c3aed;
+  --mode-osf: #0d9488;
+
+  --radius: 10px;
+  --radius-sm: 6px;
+  --shadow: 0 1px 2px rgba(24, 24, 27, 0.05);
+
+  --font: "Pretendard", "Pretendard Variable", -apple-system, BlinkMacSystemFont,
+    "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", system-ui, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  word-break: keep-all;
+}
+
+button,
+input,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* 버튼 */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  font-size: 14px;
+  font-weight: 500;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btn:hover {
+  background: var(--bg-subtle);
+}
+
+.btn-primary {
+  border-color: var(--text);
+  background: var(--text);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #3f3f46;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* 배지 */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.badge::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.badge-critical { color: var(--critical); background: var(--critical-bg); }
+.badge-warning  { color: var(--warning);  background: var(--warning-bg); }
+.badge-normal   { color: var(--normal);   background: var(--normal-bg); }
+.badge-info     { color: var(--info);     background: var(--info-bg); }
+.badge-neutral  { color: var(--text-secondary); background: var(--bg-muted); }
