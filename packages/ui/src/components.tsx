@@ -1,4 +1,4 @@
-// 두 앱 공통 화면 조각(Prototype v17 구조 · 승인 CSS class 그대로): 상단 바 · 진행 표시 · 등급 배지 · 기록 카드 · 기록 창.
+// 두 앱 공통 화면 조각(모양은 styles/theme.css): 상단 바 · 진행 표시 · 등급 배지 · 기록 카드 · 기록 창.
 
 import type { ReactNode } from "react";
 import type { HistoryRecord, Schemas } from "./api";
