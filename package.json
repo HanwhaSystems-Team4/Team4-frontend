@@ -1,26 +1,32 @@
 {
   "name": "team4-frontend",
   "private": true,
-  "version": "0.0.0",
-  "type": "module",
+  "workspaces": [
+    "packages/*",
+    "apps/*",
+    "tools/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "lint": "oxlint",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "react": "^19.2.8",
-    "react-dom": "^19.2.8",
-    "react-router-dom": "^7.18.4"
+    "dev:tech": "npm run dev -w @team4/tech",
+    "dev:lead": "npm run dev -w @team4/lead",
+    "dev:dashboard": "npm run dev -w @team4/dashboard",
+    "typecheck": "tsc -b packages/ui apps/tech apps/lead apps/dashboard",
+    "build": "npm run build -w @team4/tech && npm run build -w @team4/lead && npm run build -w @team4/dashboard",
+    "test": "npm test -w @team4/tech && npm test -w @team4/lead",
+    "lint": "npm run lint -w @team4/dashboard",
+    "api:types": "npm run gen -w @team4/api-types"
   },
   "devDependencies": {
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.7",
     "@types/node": "^24.13.3",
-    "@types/react": "^19.2.18",
-    "@types/react-dom": "^19.2.7",
-    "@vitejs/plugin-react": "^6.1.1",
-    "oxlint": "^1.81.0",
-    "typescript": "~6.0.2",
-    "vite": "^8.3.0"
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.2",
+    "jsdom": "^30.1.2",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.4"
   }
 }
