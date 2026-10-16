@@ -1,0 +1,4 @@
+/* 파트장 앱 전용 조정. 공통 모양은 packages/ui/src/styles/theme.css */
+.wb .lg-wrap {
+  width: 100%;
+}

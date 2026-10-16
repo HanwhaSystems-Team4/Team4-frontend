@@ -1,58 +1,72 @@
-# front
+# Team4 Frontend
 
 과제 10. 제조 설비 이상정보 기반 원인·대응정보 생성 Agent의 웹 프론트엔드.
 
-React 19 + TypeScript + Vite, 라우팅은 react-router-dom.
+React 19 + TypeScript + Vite, npm workspaces 모노레포.
 
-## 실행
+## 구성
+
+| 경로 | 내용 | 개발 서버 |
+| --- | --- | --- |
+| `apps/tech` | 정비자 앱. 알람 → 진단(원인 후보 순위·비슷한 과거 기록) → 잠금 → 매뉴얼 점검 → 조치·재가동 → 보고서 | http://localhost:5181 |
+| `apps/lead` | 파트장 앱. 보고서 승인, 호출 응답, 매뉴얼 절별 권한 등급, 감사 기록 | http://localhost:5182 |
+| `apps/dashboard` | 설비 이상 현황 대시보드 (Mock 데이터) | http://localhost:5173 |
+| `packages/ui` | 두 앱 공통 컴포넌트, API 클라이언트, **디자인 테마** `styles/theme.css` | — |
+| `api/openapi.json` | 백엔드 API 명세 사본. 프론트 타입의 기준 | — |
+| `tools/api-types` | `api/openapi.json` → `packages/ui/src/api/schema.d.ts` 타입 생성 | — |
+
+세 앱은 같은 디자인 언어(흰 바탕, 회색 중립색, 주황 강조, 검정 주 버튼, Pretendard)를 쓴다.
+
+## 처음 한 번
+
+Node 20 이상.
 
 ```bash
 npm install
-npm run dev      # http://localhost:5173
-npm run build    # 타입 체크 + 프로덕션 빌드
-npm run lint     # oxlint
 ```
 
-개발용 임시 계정: `hanwha0902` / `hanwha0902` (Mock 인증, 백엔드 인증 API 연동 시 제거)
+## 명령
 
-## 화면
+```bash
+npm run dev:tech        # 정비자 앱
+npm run dev:lead        # 파트장 앱
+npm run dev:dashboard   # 대시보드
 
-| 경로 | 내용 |
-| --- | --- |
-| `/login` | 로그인 |
-| `/dashboard` | 대시보드 (KPI, 고장 유형 탭, 일별 이상 발생 차트, 설비 상태, 최근 이상 이벤트) |
-
-로그인하지 않은 상태로 다른 경로에 들어가면 `/login`으로 이동한다.
-
-## 구조
-
-```
-src/
-  api/
-    types.ts        API 응답 타입 (백엔드와 맞출 기준)
-    client.ts       API 호출. 기본은 Mock, VITE_USE_MOCK=false 면 fetch
-    mock.ts         Mock 데이터 (설비·센서 값은 UCI AI4I 2020 기준)
-  auth/             로그인 상태(AuthContext), 접근 보호(RequireAuth)
-  components/
-    layout/         사이드바 레이아웃
-    dashboard/      KPI, 탭, 차트, 설비 목록, 이벤트 표
-  constants/        고장 유형·상태 라벨과 색
-  pages/            LoginPage, DashboardPage
-  styles/           base(디자인 토큰), login, dashboard
+npm test                # 정비자·파트장 앱 화면 테스트 (백엔드 없이 fixture로 동작)
+npm run typecheck       # 전체 타입 검사
+npm run build           # 세 앱 빌드
+npm run lint            # oxlint (대시보드)
+npm run api:types       # api/openapi.json이 바뀌면 타입 다시 생성
 ```
 
-## 백엔드 연동
+## 백엔드에 붙여서 테스트하기
 
-`.env.local`에 다음을 두면 Mock 대신 실제 API를 호출한다.
+정비자·파트장 앱은 실제 API가 있어야 화면이 채워진다. 개발 서버는 `/api` 요청을 백엔드로 넘기고, 앱마다 `X-App` 헤더(`tech` / `lead`)를 붙인다.
 
+1. 백엔드 스택을 띄운다 ([c1a15-maint-guide](https://github.com/Join-su/c1a15-maint-guide)의 `docker compose up -d --build --wait web`). nginx가 `127.0.0.1:8081`(정비자) · `:8082`(파트장)에 열린다.
+2. 이 레포에서 `npm run dev:tech`, `npm run dev:lead`를 각각 실행한다. 기본 연결 대상이 위 두 포트라 따로 설정할 것이 없다.
+3. 테스트 알람을 만든다 (백엔드 레포 폴더에서):
+   ```bash
+   docker compose exec api python -m c1a15.alarms DEMO-01
+   ```
+   `--list`로 시나리오 목록(DEMO-01 ~ DEMO-10)을 볼 수 있다.
+4. 로그인: 정비자 `tech.kim`, 파트장 `lead.park`. 비밀번호는 백엔드 `.env`의 `C1A15_TECH_PASSWORD` · `C1A15_LEAD_PASSWORD`.
+
+API 서버(uvicorn, 8000)에 바로 붙이려면 연결 대상을 바꾼다.
+
+```bash
+# macOS / Linux / Git Bash
+API_TARGET=http://127.0.0.1:8000 npm run dev:tech
+# Windows PowerShell
+$env:API_TARGET="http://127.0.0.1:8000"; npm run dev:tech
 ```
-VITE_USE_MOCK=false
-VITE_API_BASE_URL=http://localhost:8000/api
-```
 
-프론트가 기대하는 API (가정, 미확정):
+## 디자인 수정
 
-- `POST /auth/login` → `LoginResponse`
-- `GET /dashboard?days=14` → `DashboardResponse`
+- 색·글자·간격은 `packages/ui/src/styles/theme.css` 맨 위 `:root` 토큰에서 바꾼다. 화면 코드는 토큰만 참조한다.
+- 대시보드 토큰은 `apps/dashboard/src/styles/base.css`. 두 파일의 값을 같게 유지한다.
 
-필드 구성은 `src/api/types.ts`를 참고한다.
+## 문서
+
+- `docs/decisions/` 결정 기록 (후보 비교와 고른 이유)
+- `CHANGELOG.md` 업데이트 기록
