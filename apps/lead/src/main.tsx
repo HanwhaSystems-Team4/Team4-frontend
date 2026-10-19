@@ -1,10 +1,12 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import "@team4/ui/styles/theme.css";
+import "@team4/ui/styles/guide-a.css";
+import "@team4/ui/styles/direction-guide.css";
+import "@team4/ui/styles/theme.css"; // 색 · 테두리 · 글꼴(배치는 위 파일 그대로)
 import "./app.css";
 import { App } from "./App";
 
-// 파트장 앱. 화면 모양은 packages/ui/src/styles/theme.css(대시보드와 같은 디자인 언어).
+// 파트장 앱(1280 × 620 PC 기준, P-12). 승인 화면 · 토큰은 Prototype v17(packages/ui/src/styles = 승인 CSS 원본).
 const root = document.getElementById("root");
 if (root) {
   createRoot(root).render(

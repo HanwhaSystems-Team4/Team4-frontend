@@ -25,7 +25,7 @@ export function Login({ api, onDone }: { api: Api; onDone: (me: Me) => void }) {
   };
 
   return (
-    <div className="ap-body nostep">
+    <div className="ap-body nostep" style={{ height: 740 }}>
       <div className="lg-wrap">
         <form className="lg-card" onSubmit={submit}>
           <div className="brand">

@@ -11,7 +11,7 @@ React 19 + TypeScript + Vite, npm workspaces 모노레포.
 | `apps/tech` | 정비자 앱. 알람 → 진단(원인 후보 순위·비슷한 과거 기록) → 잠금 → 매뉴얼 점검 → 조치·재가동 → 보고서 | http://localhost:5181 |
 | `apps/lead` | 파트장 앱. 보고서 승인, 호출 응답, 매뉴얼 절별 권한 등급, 감사 기록 | http://localhost:5182 |
 | `apps/dashboard` | 설비 이상 현황 대시보드 (Mock 데이터) | http://localhost:5173 |
-| `packages/ui` | 두 앱 공통 컴포넌트, API 클라이언트, **디자인 테마** `styles/theme.css` | — |
+| `packages/ui` | 두 앱 공통 컴포넌트, API 클라이언트, 화면 스타일 `styles/` | — |
 | `api/openapi.json` | 백엔드 API 명세 사본. 프론트 타입의 기준 | — |
 | `tools/api-types` | `api/openapi.json` → `packages/ui/src/api/schema.d.ts` 타입 생성 | — |
 
@@ -63,8 +63,9 @@ $env:API_TARGET="http://127.0.0.1:8000"; npm run dev:tech
 
 ## 디자인 수정
 
-- 색·글자·간격은 `packages/ui/src/styles/theme.css` 맨 위 `:root` 토큰에서 바꾼다. 화면 코드는 토큰만 참조한다.
-- 대시보드 토큰은 `apps/dashboard/src/styles/base.css`. 두 파일의 값을 같게 유지한다.
+- 화면 배치(위치·크기·간격·격자)는 `packages/ui/src/styles/guide-a.css` · `direction-guide.css` · `past-adjust.css`가 정한다.
+- 색·테두리·글꼴은 그 뒤에 불러오는 `packages/ui/src/styles/theme.css`에서 바꾼다. 배치는 이 파일에서 건드리지 않는다.
+- 대시보드 토큰은 `apps/dashboard/src/styles/base.css`. 두 쪽 색 값을 같게 유지한다.
 
 ## 문서
 
