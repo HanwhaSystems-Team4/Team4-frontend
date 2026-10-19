@@ -1,0 +1,243 @@
+/*
+ * Team4 테마(색 · 테두리 · 글꼴) — guide-a.css · direction-guide.css · past-adjust.css 다음에 불러온다.
+ * 화면 배치(위치 · 크기 · 간격 · 격자 · 화면 틀)는 위 세 파일이 정하고, 이 파일은 바꾸지 않는다.
+ * 대시보드(apps/dashboard)와 같은 디자인 언어: zinc 회색 · 주황 강조 · 검정 주 버튼 · Pretendard.
+ */
+
+:root {
+  --acc: #ea580c;
+  --acc-h: #c2410c;
+  --acc-s: #fff1e8;
+  --acc-ln: #fdc9a6;
+  --ln-strong: #d4d4d8;
+  --info: #1d4ed8;
+  --info-s: #e8effd;
+  --info-ln: #bccdf6;
+  --btn-primary-warn: var(--acc);
+  --accent: var(--acc);
+}
+
+/* 글자 굵기: 900 → 700 (대시보드와 같은 무게) */
+.brand,
+.tb-ctx,
+.alh h3,
+.nx h3,
+.ins-h h3,
+.done-h h3,
+.warn-h h3,
+.kt b,
+.rv-big,
+.wb-top h2,
+.btn {
+  font-weight: 700;
+}
+
+/* 로고 · 알림 숫자 · 아바타: 주황 */
+.logo,
+.logo2 {
+  background: var(--acc);
+}
+.tb-bell i,
+.cnt {
+  background: var(--acc);
+}
+.av {
+  background: var(--acc-s);
+  color: var(--acc-h);
+}
+
+/* 카드: 그림자 없이 테두리만 */
+.cd {
+  border-radius: 12px;
+  box-shadow: none;
+}
+.cd.hl {
+  border-color: var(--ink);
+  box-shadow: none;
+}
+
+/* 버튼: 검정 주 버튼 · 회색 테두리 보조 버튼 */
+.btn {
+  border-radius: 6px;
+}
+.btn.lg {
+  border-radius: 8px;
+}
+.btn.ghost {
+  border-color: var(--ln-strong);
+}
+.tb-home {
+  border-radius: 6px;
+}
+.tb-home.on {
+  background: #fff;
+  border-color: var(--ink);
+}
+
+/* 칩: 둥근 알약 */
+.ch {
+  border-radius: 999px;
+}
+.ch.blue {
+  background: var(--info-s);
+  color: var(--info);
+}
+.tb-ctx {
+  border-radius: 6px;
+}
+
+/* 등급 배지 B: 파랑 유지(권한 등급 색은 의미가 정해져 있다) */
+.gB {
+  background: var(--info-s);
+  border-color: var(--info-ln);
+  color: var(--info);
+}
+.gB b {
+  background: var(--info);
+}
+.gC b {
+  background: #b45309;
+}
+
+/* 진행 표시: 완료 검정 · 현재 주황 */
+.sp.done .spn {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.spl.done {
+  background: var(--ink);
+}
+.sp.on {
+  color: var(--acc-h);
+}
+.sp.on .spn {
+  background: var(--acc);
+  border-color: var(--acc);
+  box-shadow: 0 0 0 4px var(--acc-s);
+}
+.sp.done.pick {
+  border-color: var(--ln-strong);
+}
+.sp.done.pick::after {
+  color: var(--mut);
+}
+.sp.done.pick.view {
+  border-color: var(--acc);
+  box-shadow: 0 0 0 1px var(--acc);
+  color: var(--acc-h);
+}
+
+/* 강조 지점: 1순위 원인 · 지금 할 절차 · 지금 단계 · 현재 메뉴 */
+.rk.on .rn,
+.rk.on .rb i {
+  background: var(--acc);
+}
+.proc li:last-child {
+  background: var(--acc-s);
+}
+.proc li:last-child span {
+  background: var(--acc);
+}
+.ap-body.past .proc li:last-child span {
+  background: var(--ink);
+}
+.tli.now .td {
+  background: var(--acc);
+  box-shadow: 0 0 0 4px var(--acc-s);
+}
+.hist-nav span.on::before,
+.pastbar::before {
+  background: var(--acc);
+}
+.lk {
+  color: var(--ink);
+  text-decoration: underline;
+  text-decoration-color: var(--ln-strong);
+  text-underline-offset: 3px;
+}
+.mh .ic,
+.ai-c .cd-h .ic {
+  color: var(--acc);
+}
+.hc-t b {
+  color: var(--ink);
+}
+
+/* 체크 · 선택 */
+.ck.on .cb {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.dopt.sel {
+  border-color: var(--ink);
+  background: var(--bg);
+}
+.dopt.sel .rd {
+  border-color: var(--ink);
+}
+.dd div.on {
+  background: var(--acc-s);
+  color: var(--acc-h);
+}
+
+/* 안내 띠: 정보는 파랑, 나머지는 상태 색 + 안쪽 1px 테두리(크기는 그대로) */
+.banner {
+  border-radius: 10px;
+}
+.banner.info,
+.wg .banner.info {
+  background: var(--info-s);
+  box-shadow: inset 0 0 0 1px var(--info-ln);
+  color: #1e3a8a;
+}
+.banner.bad {
+  box-shadow: inset 0 0 0 1px #f3b4b6;
+}
+.banner.warn {
+  box-shadow: inset 0 0 0 1px #f1cf86;
+}
+.banner.ok {
+  box-shadow: inset 0 0 0 1px #a7dcb9;
+}
+.act.pre {
+  background: var(--info-s);
+}
+.act.pre::after {
+  background: #fff;
+  color: var(--info);
+}
+
+/* 입력칸 포커스 */
+.ap textarea.memo:focus,
+.fld .inp:focus {
+  border-color: var(--ink);
+  outline: none;
+}
+
+/* 파트장 앱 사이드바: 대시보드와 같은 밝은 사이드바 */
+.wb-side {
+  background: var(--bg);
+  border-right: 1px solid var(--ln);
+  color: var(--sub);
+}
+.wb-side .brand {
+  color: var(--ink);
+}
+.wn {
+  color: var(--sub);
+}
+.wn.on {
+  background: #fff;
+  box-shadow: inset 0 0 0 1px var(--ln);
+  color: var(--ink);
+  font-weight: 700;
+}
+.wn.on::before {
+  background: var(--acc);
+}
+.wb-me {
+  color: var(--sub);
+}
+.wt tr.on td {
+  background: var(--acc-s);
+}
