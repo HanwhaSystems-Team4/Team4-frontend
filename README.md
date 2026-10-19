@@ -69,5 +69,8 @@ $env:API_TARGET="http://127.0.0.1:8000"; npm run dev:tech
 
 ## 문서
 
+에이전트로 작업할 때의 규칙은 `CLAUDE.md`에 있다.
+
+- `docs/specs/` 기능 명세 (무엇을 만드는지)
 - `docs/decisions/` 결정 기록 (후보 비교와 고른 이유)
 - `CHANGELOG.md` 업데이트 기록
