@@ -1,0 +1,148 @@
+﻿/*
+ * 후보 B · 현장 터치형 — 장갑 낀 손 · 태블릿 · 한 손 조작을 기준으로 다시 그린 안.
+ * 참고: ISA-101 고성능 HMI(회색 바탕, 색은 이상 상태에만), Material Design 3 터치 영역(48dp 이상) · 하단 내비게이션,
+ *       Apple HIG(최소 44pt 터치 영역).
+ * 바뀌는 것: 진행 표시를 화면 아래(엄지 닿는 곳)로 내리고 칸을 크게 나눔, 주 버튼 높이 64px · 파랑, 결과 버튼 크게,
+ *           모서리를 각지게(6~8px), 회색 바탕 + 흰 카드 2px 테두리, 파트장 앱 메뉴 · 표 행 높이 키움.
+ * 그대로: 화면 · 버튼 · 이동 순서(DOM과 클래스), 등급 배지 색 의미(A 초록 · B 파랑 · C 주황 · D 빨강).
+ */
+[data-variant="b"] {
+  --ink: #1b1f24; --sub: #4a5260; --mut: #6b7280; --ln: #c9ced6; --bg: #e3e6ea;
+  --pri: #0b57d0; --pri-s: #e3edfc; --acc: #0b57d0; --acc-h: #0842a0; --acc-s: #e3edfc; --acc-ln: #a8c4f0;
+  --accent: #0b57d0; --ln-strong: #9aa3ae; --input-border: #9aa3ae;
+  --ok: #137333; --ok-s: #e2f3e7; --warn: #b06000; --warn-s: #fdf0d5; --bad: #c5221f; --bad-s: #fce8e6;
+}
+
+/* ── 화면 틀: 위 상단 바 · 가운데 본문 · 아래 진행 표시(엄지 영역) ── */
+[data-variant="b"] .ap { display: flex; flex-direction: column; background: var(--bg); }
+[data-variant="b"] .ap-top { flex: none; height: 64px; border-bottom: 2px solid var(--ln); }
+[data-variant="b"] .ap-body { flex: 1 1 auto; height: auto !important; min-height: 0; padding: 16px 20px; }
+[data-variant="b"] .pastbar { flex: none; margin: 10px 20px 0; }
+[data-variant="b"] .ap-step {
+  order: 10; flex: none; height: 72px; padding: 8px 12px; gap: 6px; justify-content: stretch;
+  background: #fff; border-top: 2px solid var(--ln); border-bottom: none;
+}
+[data-variant="b"] .spl { display: none; }
+[data-variant="b"] .sp {
+  flex: 1; justify-content: center; height: 56px; gap: 10px; border-radius: 8px; font-size: 17px;
+  background: #f1f3f5; color: var(--mut); border: 2px solid transparent; padding: 0 8px;
+}
+[data-variant="b"] .spn { width: 30px; height: 30px; font-size: 15px; }
+[data-variant="b"] .sp.done { background: #f1f3f5; color: var(--ink); }
+[data-variant="b"] .sp.done .spn { background: var(--ok); border-color: var(--ok); color: #fff; }
+[data-variant="b"] .sp.done.pick { background: #fff; border: 2px solid #9fd3ad; padding: 0 8px; }
+[data-variant="b"] .sp.done.pick::after { color: var(--ok); }
+[data-variant="b"] .sp.on { background: var(--pri); color: #fff; box-shadow: 0 4px 0 #083f97; }
+[data-variant="b"] .sp.on .spn { background: #fff; border-color: #fff; color: var(--pri); box-shadow: none; }
+[data-variant="b"] .sp.done.pick.view { background: #fff; border: 2px solid var(--ink); box-shadow: none; color: var(--ink); }
+
+/* ── 상단 바: 홈 · 종을 48px 정사각 터치 버튼으로 ── */
+[data-variant="b"] .logo, [data-variant="b"] .logo2 { background: var(--pri); border-radius: 6px; }
+[data-variant="b"] .tb-ctx { border-radius: 6px; background: var(--bad-s); color: #8c1d18; border: 2px solid #f4b4ae; }
+[data-variant="b"] .tb-ctx.muted { background: #f1f3f5; border-color: var(--ln); color: var(--mut); }
+[data-variant="b"] .tb-home { min-height: 48px; border: 2px solid var(--ln); border-radius: 8px; font-size: 16px; padding: 0 16px; }
+[data-variant="b"] .tb-home.on { background: var(--pri-s); border-color: var(--pri); color: var(--acc-h); }
+[data-variant="b"] .tb-bell { width: 48px; height: 48px; justify-content: center; border: 2px solid var(--ln); border-radius: 8px; background: #fff; }
+[data-variant="b"] .tb-bell i { top: -8px; right: -8px; background: var(--bad); font-size: 12.5px; padding: 1px 6px; }
+[data-variant="b"] .av { background: var(--pri-s); color: var(--acc-h); border-radius: 8px; }
+
+/* ── 카드: 흰 바탕 + 2px 회색 테두리, 모서리 8px, 그림자 없음 ── */
+[data-variant="b"] .cd { border: 2px solid var(--ln); border-radius: 8px; box-shadow: none; }
+[data-variant="b"] .cd.hl { border: 3px solid var(--pri); box-shadow: none; }
+[data-variant="b"] .ai-c { border: 2px solid var(--acc-ln); }
+[data-variant="b"] .cd-h b { font-size: 18px; }
+[data-variant="b"] .cd-h .ic { color: var(--ink); }
+
+/* ── 버튼: 주 버튼 파랑 · 높이 52 / 큰 버튼 64, 보조 버튼 2px 테두리 ── */
+[data-variant="b"] .btn { min-height: 52px; padding: 0 22px; border-radius: 8px; font-size: 16.5px; background: var(--pri); box-shadow: 0 3px 0 #083f97; }
+[data-variant="b"] .btn.lg { min-height: 68px; font-size: 20px; border-radius: 10px; }
+[data-variant="b"] .btn.sm2 { min-height: 44px; font-size: 15px; padding: 0 16px; }
+[data-variant="b"] .btn.ghost { background: #fff; color: var(--ink); border: 2px solid var(--ln-strong); box-shadow: 0 3px 0 #c9ced6; }
+[data-variant="b"] .btn.warnb { background: var(--warn); box-shadow: 0 3px 0 #7a4300; }
+[data-variant="b"] .btn.dis { box-shadow: none; }
+[data-variant="b"] .btn:active:not(.dis) { transform: translateY(2px); box-shadow: 0 1px 0 #083f97; }
+[data-variant="b"] .wt td .btn { min-height: 44px; padding: 0 20px; }
+
+/* ── 홈: 알람 한 줄 = 큰 터치 카드, 왼쪽 상태 띠 ── */
+[data-variant="b"] .al { padding: 14px 16px 14px 20px; border: 2px solid var(--ln); border-radius: 8px; position: relative; min-height: 84px; }
+[data-variant="b"] .al:has(.dot.red) { border-color: #f4b4ae; background: #fffafa; }
+[data-variant="b"] .al:has(.dot.red)::before { content: ""; position: absolute; left: -2px; top: -2px; bottom: -2px; width: 8px; border-radius: 8px 0 0 8px; background: var(--bad); }
+[data-variant="b"] .al:has(.dot.amber)::before { content: ""; position: absolute; left: -2px; top: -2px; bottom: -2px; width: 8px; border-radius: 8px 0 0 8px; background: var(--warn); }
+[data-variant="b"] .al .btn { min-width: 132px; }
+[data-variant="b"] .al-m b { font-size: 19px; }
+[data-variant="b"] .al-m span { font-size: 15px; }
+[data-variant="b"] .kt { background: #f1f3f5; border-radius: 8px; border: 2px solid transparent; }
+[data-variant="b"] .kt b { font-size: 34px; }
+[data-variant="b"] .cnt { background: var(--bad); border-radius: 6px; }
+
+/* ── 알람 · 진단 · 지시 ── */
+[data-variant="b"] .ali { border-radius: 8px; }
+[data-variant="b"] .ch { border-radius: 6px; font-size: 13.5px; padding: 4px 10px; }
+[data-variant="b"] .ch.blue { background: var(--pri-s); color: var(--acc-h); }
+[data-variant="b"] .tbl td { padding: 10px 8px; }
+[data-variant="b"] .tbl tr.down td { background: var(--bad-s); font-weight: 700; }
+[data-variant="b"] .tbl tr.down td:first-child { box-shadow: inset 6px 0 0 var(--bad); }
+[data-variant="b"] .spk .ln { stroke: var(--ink); }
+[data-variant="b"] .ev { background: #f1f3f5; color: var(--ink); border-radius: 8px; }
+[data-variant="b"] .rk { padding: 14px 6px; }
+[data-variant="b"] .rk .rb { height: 16px; border-radius: 4px; }
+[data-variant="b"] .rk.on .rn, [data-variant="b"] .rk.on .rb i { background: var(--pri); }
+[data-variant="b"] .rn { border-radius: 6px; }
+[data-variant="b"] .hc { border: 2px solid var(--ln); border-radius: 8px; min-height: 96px; }
+[data-variant="b"] .hc-t b { color: var(--pri); }
+[data-variant="b"] .why { background: #f1f3f5; border-radius: 8px; }
+[data-variant="b"] .proc li { border-radius: 8px; font-size: 16px; background: #f1f3f5; }
+[data-variant="b"] .proc li span { background: var(--ink); }
+[data-variant="b"] .proc li:last-child { background: var(--pri-s); box-shadow: inset 0 0 0 2px var(--acc-ln); }
+[data-variant="b"] .proc li:last-child span { background: var(--pri); }
+[data-variant="b"] .lockok { border-radius: 8px; border: 2px solid #9fd3ad; }
+[data-variant="b"] .lk { color: var(--pri); text-decoration-color: var(--acc-ln); font-size: 15.5px; min-height: 44px; }
+
+/* 결과 버튼: 크게, 고르면 색으로 꽉 채움(멀리서도 읽힘) */
+[data-variant="b"] .rbtns { gap: 12px; }
+[data-variant="b"] .rbtn { min-height: 120px; justify-content: center; border: 2px solid var(--ln-strong); border-radius: 10px; font-size: 19px; background: #fff; color: var(--ink); }
+[data-variant="b"] .rbtn .ic { width: 36px; height: 36px; }
+[data-variant="b"] .rbtn.sel.ok { background: var(--ok); border-color: var(--ok); color: #fff; }
+[data-variant="b"] .rbtn.sel.bad { background: var(--bad); border-color: var(--bad); color: #fff; }
+[data-variant="b"] .rbtn.sel.na { background: #4a5260; border-color: #4a5260; color: #fff; }
+[data-variant="b"] .memo, [data-variant="b"] .ap textarea.memo { border: 2px solid var(--ln-strong); border-radius: 8px; font-size: 17px; }
+[data-variant="b"] .ap textarea.memo:focus { border-color: var(--pri); box-shadow: 0 0 0 3px var(--pri-s); }
+[data-variant="b"] .ck { min-height: 44px; font-size: 16px; }
+[data-variant="b"] .cb { width: 28px; height: 28px; border-radius: 6px; }
+[data-variant="b"] .ck.on .cb { background: var(--pri); border-color: var(--pri); }
+[data-variant="b"] .ckl .ck.on .cb, [data-variant="b"] .ckl .ck.no .cb { background: none; border-color: transparent; }
+[data-variant="b"] .ckl .ck.on .cb { color: var(--ok); }
+[data-variant="b"] .act { border: 2px solid var(--ln); border-radius: 8px; }
+[data-variant="b"] .done-h, [data-variant="b"] .warn-h { border-radius: 8px; }
+[data-variant="b"] .banner { border-radius: 8px; }
+[data-variant="b"] .tli.now .td { background: var(--pri); box-shadow: 0 0 0 4px var(--pri-s); }
+
+/* ── 창 · 알림 패널: 모서리 각지게, 닫기 버튼 크게 ── */
+[data-variant="b"] .modal { border-radius: 10px; }
+[data-variant="b"] .panel { border-radius: 10px; border: 2px solid var(--ln); top: 72px; }
+[data-variant="b"] .nt-item { min-height: 64px; }
+[data-variant="b"] .dopt { border: 2px solid var(--ln); border-radius: 8px; min-height: 64px; align-items: center; }
+[data-variant="b"] .dopt.sel { border-color: var(--pri); background: var(--pri-s); }
+[data-variant="b"] .dopt.sel .rd { border: 7px solid var(--pri); }
+[data-variant="b"] .rd { width: 26px; height: 26px; margin-top: 0; }
+
+/* ── 로그인 ── */
+[data-variant="b"] .lg-card { border: 2px solid var(--ln); border-radius: 10px; }
+[data-variant="b"] .fld .inp { min-height: 52px; border: 2px solid var(--ln-strong); border-radius: 8px; font-size: 17px; }
+[data-variant="b"] .fld .inp:focus { border-color: var(--pri); box-shadow: 0 0 0 3px var(--pri-s); }
+
+/* ── 파트장 앱: 메뉴 · 표 행을 크게, 현재 메뉴는 파랑 칸 ── */
+[data-variant="b"] .wb { background: var(--bg); }
+[data-variant="b"] .wb-side { background: #fff; border-right: 2px solid var(--ln); gap: 8px; }
+[data-variant="b"] .wn { min-height: 52px; font-size: 16.5px; border-radius: 8px; color: var(--sub); }
+[data-variant="b"] .wn.on { background: var(--pri); color: #fff; box-shadow: none; }
+[data-variant="b"] .wn.on::before { display: none; }
+[data-variant="b"] .wt th { background: #f1f3f5; font-size: 13.5px; }
+[data-variant="b"] .wt td { padding: 14px 10px; font-size: 15.5px; }
+[data-variant="b"] .wt tr.on td { background: var(--pri-s); }
+[data-variant="b"] .sel2 { border: 2px solid var(--ln-strong); border-radius: 8px; min-height: 44px; }
+[data-variant="b"] .flt .sel2 { min-height: 48px; }
+[data-variant="b"] .kts.w .kt { background: #fff; border: 2px solid var(--ln); }
+
+/* 다크 모드 버튼: 다른 상단 버튼처럼 48px · 2px 테두리 */
+[data-variant="b"] .theme-tg { min-height: 48px; border: 2px solid var(--ln); border-radius: 8px; font-size: 15px; }

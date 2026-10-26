@@ -1,0 +1,9 @@
+/*
+ * A/B 테스트 디자인 후보(결정 0004). 각 파일은 html[data-variant="x"] 아래에서만 적용된다.
+ * data-variant가 없거나 "a"이면 지금 화면(guide-a · direction-guide · past-adjust · theme) 그대로다.
+ * 화면 구성 · 버튼 · 이동 순서(DOM과 클래스)는 바꾸지 않고 CSS로 색 · 모양 · 크기 · 위치만 바꾼다.
+ */
+@import "./variants/ab.css";
+@import "./variants/b-field.css";
+@import "./variants/c-workspace.css";
+@import "./variants/d-bento.css";

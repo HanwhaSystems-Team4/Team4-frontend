@@ -1,9 +1,10 @@
-// 두 앱 공통 화면 조각(모양은 styles/theme.css): 상단 바 · 진행 표시 · 등급 배지 · 기록 카드 · 기록 창.
+// 두 앱 공통 화면 조각(모양은 styles/theme.css): 상단 바(다크 모드 버튼 포함) · 진행 표시 · 등급 배지 · 기록 카드 · 기록 창.
 
 import type { ReactNode } from "react";
 import type { HistoryRecord, Schemas } from "./api";
 import { dateTime, num } from "./format";
 import { Icon } from "./icons";
+import { ThemeToggle } from "./theme-mode";
 
 export const GRADE_LABEL: Record<string, string> = { A: "단독 가능", B: "확인 후", C: "승인 필요", D: "범위 밖" };
 
@@ -45,6 +46,7 @@ export function TopBar(p: TopBarProps) {
         <div className="tb-ctx muted">진행 중인 알람 없음</div>
       )}
       <div className="tb-r">
+        <ThemeToggle className="tb-theme" />
         <span className="tb-clock">
           <Icon name="clock" />
           {p.clock}

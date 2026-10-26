@@ -1,0 +1,259 @@
+/*
+ * 다크 모드(결정 0005) — 상단 '다크' 버튼으로 켜면 <html data-theme="dark">가 붙고 이 파일이 색만 어둡게 바꾼다.
+ * 배치 · 크기 · 화면 순서는 그대로다. A/B 후보(data-variant) 위에도 걸리도록 html[data-theme] 선택자로 우선순위를 높였다.
+ * 색은 어두운 남회색 바탕 + 밝은 글자, 상태 색(빨강 · 노랑 · 초록 · 파랑)은 어두운 바탕에서 읽히는 밝은 톤으로.
+ */
+
+/* ── 다크 모드 버튼(밝은 화면에서도 보이는 공통 모양) ── */
+.theme-tg {
+  display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; min-height: 36px; box-sizing: border-box;
+  border: 1px solid var(--ln-strong, #d4d4d8); border-radius: 999px; background: transparent; color: var(--sub);
+  font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; user-select: none;
+}
+.theme-tg .ic { width: 16px; height: 16px; }
+.theme-tg:hover { color: var(--ink); border-color: var(--ink); }
+.wb-top .theme-tg { margin-left: auto; align-self: center; }
+.tb-r .theme-tg { min-height: 40px; }
+
+/* ── 색 토큰 ── */
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --ink: #e6edf3; --sub: #a3b1bf; --mut: #7d8a98; --ln: #2c3742; --bg: #0d1217; --card: #161d24; --l2: #1c252e;
+  --ln-strong: #3d4a57; --input-border: #3d4a57; --navy: #e6edf3;
+  --info: #6cb6ff; --info-s: #10263d; --info-ln: #1f4a75;
+  --ok: #3fd27f; --ok-s: #0f2a1c; --warn: #f5b13d; --warn-s: #2e2410; --bad: #ff5d63; --bad-s: #3a1418;
+  --btn-primary-warn: #c27c0e; --grade-c-bg: #2e2410; --grade-c-border: #6b5220;
+  /* A(현재 버전): 검정 주 버튼 → 밝은 회색 주 버튼(어두운 글자), 주황 강조는 밝게 */
+  --pri: #f4f4f5; --acc: #fb923c; --acc-h: #fdba74; --accent: #fb923c;
+  --pri-s: #24272c; --acc-s: #33210f; --acc-ln: #7c4a1c;
+  --on-pri: #18181b;
+  --glass: rgba(22, 29, 36, .82);
+}
+html[data-theme="dark"][data-variant="b"] { --pri: #4d8ef7; --acc: #4d8ef7; --acc-h: #8db8ff; --accent: #4d8ef7; --on-pri: #fff; }
+html[data-theme="dark"][data-variant="c"] { --pri: #4589ff; --acc: #4589ff; --acc-h: #a6c8ff; --accent: #4589ff; --on-pri: #fff; }
+html[data-theme="dark"][data-variant="d"] { --pri: #8b6cff; --acc: #8b6cff; --acc-h: #c4b5fd; --accent: #8b6cff; --on-pri: #fff; }
+html[data-theme="dark"]:is([data-variant="b"], [data-variant="c"], [data-variant="d"]) {
+  --pri-s: color-mix(in srgb, var(--pri) 18%, #161d24); --acc-s: var(--pri-s); --acc-ln: color-mix(in srgb, var(--pri) 45%, #161d24);
+}
+html[data-theme="dark"], html[data-theme="dark"] body { background: #05080b; }
+
+/* ── 화면 틀 · 상단 바 · 진행 표시 ── */
+html[data-theme="dark"] .ap, html[data-theme="dark"] .wb { background: var(--bg); color: var(--ink); }
+html[data-theme="dark"] .ap-top, html[data-theme="dark"] .ap-step { background: #0a0f14; border-color: var(--ln); }
+html[data-theme="dark"] .brand { color: var(--ink); }
+html[data-theme="dark"] .tb-ctx { background: var(--bad-s); color: #ffb3b6; box-shadow: inset 0 0 0 1px #6b2328; }
+html[data-theme="dark"] .tb-ctx.muted { background: var(--l2); color: var(--mut); box-shadow: none; }
+html[data-theme="dark"] .tb-r { color: var(--sub); }
+html[data-theme="dark"] .tb-home, html[data-theme="dark"] .tb-bell { background: transparent; border-color: var(--ln-strong); color: var(--ink); }
+html[data-theme="dark"] .tb-home.on { background: var(--pri-s); border-color: var(--pri); color: var(--ink); }
+html[data-theme="dark"] .av { background: var(--pri-s); color: var(--ink); }
+html[data-theme="dark"] .logo, html[data-theme="dark"] .logo2 { color: #fff; }
+html[data-theme="dark"] .spn { border-color: var(--ln-strong); background: transparent; }
+html[data-theme="dark"] .spl { background: var(--ln); }
+html[data-theme="dark"] .sp.done .spn { background: var(--ok); border-color: var(--ok); color: #04120a; }
+html[data-theme="dark"] .spl.done { background: var(--ok); }
+html[data-theme="dark"] .sp.done.pick { background: var(--card); border-color: #1e5a38; }
+html[data-theme="dark"] .sp.on { color: var(--ink); }
+html[data-theme="dark"] .sp.on .spn { background: var(--acc); border-color: var(--acc); color: #18181b; box-shadow: 0 0 0 4px var(--acc-s); }
+html[data-theme="dark"] .sp.done.pick.view { background: var(--card); border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); color: var(--ink); }
+
+/* ── 카드 · 글자 · 칩 ── */
+html[data-theme="dark"] .cd { background: var(--card); border-color: var(--ln); box-shadow: none; }
+html[data-theme="dark"] .cd.hl { border-color: var(--acc); }
+html[data-theme="dark"] .ai-c { border-color: #5b3fa8; }
+html[data-theme="dark"] .cd-h .ic { color: var(--sub); }
+html[data-theme="dark"] :is(.sm, .note, .hint, .rs, .empty) { color: var(--mut); }
+html[data-theme="dark"] .sub { color: var(--sub); }
+html[data-theme="dark"] .ch { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"] .ch.red { background: var(--bad-s); color: #ff9a9e; }
+html[data-theme="dark"] .ch.amber { background: var(--warn-s); color: #ffcf7a; }
+html[data-theme="dark"] .ch.green { background: var(--ok-s); color: #7ee2a8; }
+html[data-theme="dark"] .ch.blue { background: var(--info-s); color: var(--info); }
+html[data-theme="dark"] :is(.ch.src, .ch.fb, .ch.gray) { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"] .gA { background: var(--ok-s); color: #7ee2a8; border-color: #1e5a38; } html[data-theme="dark"] .gA b { background: #2fae67; }
+html[data-theme="dark"] .gB { background: var(--info-s); color: var(--info); border-color: var(--info-ln); } html[data-theme="dark"] .gB b { background: #3b82d6; }
+html[data-theme="dark"] .gC { background: var(--warn-s); color: #ffcf7a; border-color: #6b5220; } html[data-theme="dark"] .gC b { background: #c27c0e; }
+html[data-theme="dark"] .gD { background: var(--bad-s); color: #ff9a9e; border-color: #6b2328; } html[data-theme="dark"] .gD b { background: #d93a40; }
+html[data-theme="dark"] .warn-h .gb { background: var(--grade-c-bg); }
+
+/* ── 버튼 ── */
+html[data-theme="dark"] .btn { background: var(--pri); color: var(--on-pri); }
+html[data-theme="dark"] .wt td .btn { color: var(--on-pri); }
+html[data-theme="dark"] .btn.ghost { background: transparent; color: var(--ink); border-color: var(--ln-strong); box-shadow: none; }
+html[data-theme="dark"] .btn.warnb { background: var(--warn); color: #2b1a00; }
+html[data-theme="dark"] :is(.btn.dis, .pastbar .btn.sm2.dis) { background: var(--l2) !important; color: var(--mut) !important; border: 1px solid var(--ln) !important; box-shadow: none; }
+
+/* ── 홈 ── */
+html[data-theme="dark"] .al { border-color: var(--ln); background: #121920; }
+html[data-theme="dark"] .al-m span, html[data-theme="dark"] .kt span, html[data-theme="dark"] .safe span { color: var(--sub); }
+html[data-theme="dark"] .kt { background: var(--l2); }
+html[data-theme="dark"] .rl { border-bottom-color: var(--ln); }
+
+/* ── 알람 · 진단 · 점검 ── */
+html[data-theme="dark"] .ali { background: var(--bad-s); }
+html[data-theme="dark"] .tbl th { color: var(--mut); border-bottom-color: var(--ln); }
+html[data-theme="dark"] .tbl td { border-bottom-color: var(--ln); }
+html[data-theme="dark"] .tbl tr.down td { background: var(--bad-s); color: #ffc2c4; }
+html[data-theme="dark"] .spk .ln { stroke: var(--ink); }
+html[data-theme="dark"] .ev { background: var(--l2); color: var(--ink); }
+html[data-theme="dark"] .rk { border-bottom-color: var(--ln); }
+html[data-theme="dark"] .rn, html[data-theme="dark"] .rb { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"] .rb i { background: var(--ln-strong); }
+html[data-theme="dark"] .rk.on .rn, html[data-theme="dark"] .rk.on .rb i { background: var(--acc); color: #18181b; }
+html[data-theme="dark"] .hc { background: #121920; border-color: var(--ln); color: var(--sub); }
+html[data-theme="dark"] .hc-t b { color: var(--acc-h); }
+html[data-theme="dark"] .hc-c { color: var(--ink); }
+html[data-theme="dark"] .why { background: var(--l2); }
+html[data-theme="dark"] .why span { color: var(--sub); }
+html[data-theme="dark"] .lockok { background: var(--ok-s); box-shadow: inset 0 0 0 1px #1e5a38; }
+html[data-theme="dark"] .lockbox { border-color: var(--ln-strong); color: var(--sub); }
+html[data-theme="dark"] .lockbox h3 { color: var(--ink); }
+html[data-theme="dark"] .proc li { background: var(--l2); }
+html[data-theme="dark"] .proc li span { background: var(--ln-strong); color: var(--ink); }
+html[data-theme="dark"] .proc li:last-child { background: var(--acc-s); box-shadow: inset 0 0 0 1px var(--acc-ln); }
+html[data-theme="dark"] .proc li:last-child span { background: var(--acc); color: #18181b; }
+html[data-theme="dark"] .ap-body.past .proc li:last-child { background: var(--l2); box-shadow: none; }
+html[data-theme="dark"] .lk { color: var(--acc-h); text-decoration-color: var(--acc-ln); }
+html[data-theme="dark"] .orig { background: var(--l2); }
+html[data-theme="dark"] .rbtn { background: #121920; border-color: var(--ln-strong); color: var(--sub); }
+html[data-theme="dark"] .rbtn.sel.ok { background: var(--ok-s); border-color: var(--ok); color: var(--ok); }
+html[data-theme="dark"] .rbtn.sel.bad { background: var(--bad-s); border-color: var(--bad); color: var(--bad); }
+html[data-theme="dark"] .rbtn.sel.na { background: var(--l2); border-color: var(--sub); color: var(--ink); }
+html[data-theme="dark"] .rbtn.dis { background: var(--l2); border-color: var(--ln); color: var(--mut); }
+html[data-theme="dark"] .ap-body.past .rbtn.sel.bad.dis { background: var(--bad-s); border-color: #6b2328; }
+html[data-theme="dark"] .ap-body.past .rbtn.sel.ok.dis { background: var(--ok-s); border-color: #1e5a38; }
+html[data-theme="dark"] .ap-body.past .rbtn.sel.dis::after { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"] :is(.memo, .ap textarea.memo, .wb textarea.memo, .wb textarea.edit-in, .edit-in, .fld .inp, .sel2) {
+  background: #0a0f14; border-color: var(--ln-strong); color: var(--ink);
+}
+html[data-theme="dark"] .ap textarea.memo:disabled, html[data-theme="dark"] .ap-body.past .memo, html[data-theme="dark"] .memo.sm3 { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"] .pv { background: var(--l2); }
+html[data-theme="dark"] .ap .pv { background: #0a0f14; border-color: var(--ln-strong); }
+html[data-theme="dark"] .act { border-color: var(--ln); }
+html[data-theme="dark"] .act.pre { background: var(--info-s); }
+html[data-theme="dark"] .act.pre::after { background: var(--warn-s); color: #ffcf7a; }
+html[data-theme="dark"] .act.pre > .sm { color: var(--ink); }
+html[data-theme="dark"] .cb { border-color: var(--ln-strong); }
+html[data-theme="dark"] .ck.on .cb { background: var(--pri); border-color: var(--pri); color: var(--on-pri); }
+html[data-theme="dark"] .ckl .ck.on .cb { background: none; border-color: transparent; color: var(--ok); }
+html[data-theme="dark"] .ckl .ck.no { color: #ff9a9e; }
+html[data-theme="dark"] .done-h { background: var(--ok-s); box-shadow: inset 0 0 0 1px #1e5a38; }
+html[data-theme="dark"] .warn-h { background: var(--warn-s); box-shadow: inset 0 0 0 1px #6b5220; }
+html[data-theme="dark"] .done-h span:last-child, html[data-theme="dark"] .tli span { color: var(--sub); }
+html[data-theme="dark"] .td { box-shadow: 0 0 0 4px var(--ok-s); }
+html[data-theme="dark"] .tli.now .td { background: var(--acc); box-shadow: 0 0 0 4px var(--acc-s); }
+html[data-theme="dark"] .tli.void .td { background: transparent; }
+html[data-theme="dark"] .rf { border-bottom-color: var(--ln); }
+html[data-theme="dark"] .rf.fail { background: var(--bad-s); }
+html[data-theme="dark"] .banner.bad { background: var(--bad-s); color: #ffc2c4; box-shadow: inset 0 0 0 1px #6b2328; }
+html[data-theme="dark"] .banner.warn { background: var(--warn-s); color: #ffdc9e; box-shadow: inset 0 0 0 1px #6b5220; }
+html[data-theme="dark"] .banner.ok { background: var(--ok-s); color: #a6eec4; box-shadow: inset 0 0 0 1px #1e5a38; }
+html[data-theme="dark"] :is(.banner.info, .wg .banner.info) { background: var(--info-s); color: #b6d8ff; box-shadow: inset 0 0 0 1px var(--info-ln); }
+html[data-theme="dark"] .pastbar { background: var(--l2); }
+html[data-theme="dark"] .hist-nav span { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"] .hist-nav span.on { background: var(--pri-s); color: var(--ink); }
+html[data-theme="dark"] .hist-nav span.off { background: none; }
+html[data-theme="dark"] .hist-row { border-bottom-color: var(--ln); }
+html[data-theme="dark"] .hist-row.unsent { background: var(--warn-s); }
+html[data-theme="dark"] :is(.corr-box, .corr-h .ch.amber, .ch.corr) { background: var(--l2); color: var(--ink); border-color: var(--ln); }
+html[data-theme="dark"] .dd { background: var(--card); border-color: var(--ln); }
+
+/* ── 창 · 알림 패널 · 로그인 ── */
+html[data-theme="dark"] .dim { background: rgba(0, 0, 0, .6); }
+html[data-theme="dark"] .modal, html[data-theme="dark"] .panel, html[data-theme="dark"] .lg-card { background: var(--card); border: 1px solid var(--ln); box-shadow: 0 20px 50px rgba(0, 0, 0, .6); }
+html[data-theme="dark"] .modal .mh + .fld2 { background: var(--l2); }
+html[data-theme="dark"] .bub.me { background: var(--l2); }
+html[data-theme="dark"] .bub.ai { background: var(--pri-s); }
+html[data-theme="dark"] .nt-item { border-bottom-color: var(--ln); }
+html[data-theme="dark"] .nt-item .al-m span, html[data-theme="dark"] .panel .grp, html[data-theme="dark"] .fld { color: var(--sub); }
+html[data-theme="dark"] .kv b { color: var(--mut); }
+
+/* ── 파트장 앱 ── */
+html[data-theme="dark"] .wb-side { background: #0a0f14; border-right-color: var(--ln); color: var(--sub); }
+html[data-theme="dark"] .wn { color: var(--sub); }
+html[data-theme="dark"] .wn.on { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 1px var(--ln); }
+html[data-theme="dark"] .wb-top h2 { color: var(--ink); }
+html[data-theme="dark"] .wt th { color: var(--mut); border-bottom-color: var(--ln); }
+html[data-theme="dark"] .wt td { border-bottom-color: var(--ln); }
+html[data-theme="dark"] .wt td b + span { color: var(--sub); }
+html[data-theme="dark"] .wt tr.on td { background: var(--pri-s); }
+html[data-theme="dark"] .kts.w .kt { background: var(--card); border-color: var(--ln); }
+html[data-theme="dark"] .dopt { border-color: var(--ln-strong); background: #121920; }
+html[data-theme="dark"] .dopt span { color: var(--sub); }
+html[data-theme="dark"] .dopt.sel { border-color: var(--pri); background: var(--pri-s); }
+html[data-theme="dark"] .dopt.sel .rd { border-color: var(--pri); }
+html[data-theme="dark"] .rd { border-color: var(--ln-strong); }
+html[data-theme="dark"] .lg2 { border-bottom-color: var(--ln); }
+
+/* ── 후보별 보정: 후보 CSS가 밝은 색을 직접 적은 곳 ── */
+html[data-theme="dark"][data-variant="b"] :is(.sp, .sp.done, .kt, .ev, .why, .proc li, .wt th) { background: var(--l2); }
+html[data-theme="dark"][data-variant="b"] .sp.on { background: var(--pri); color: #fff; box-shadow: none; }
+html[data-theme="dark"][data-variant="b"] .sp.on .spn { background: #fff; border-color: #fff; color: var(--pri); box-shadow: none; }
+html[data-theme="dark"][data-variant="b"] .sp.done.pick { background: var(--card); }
+html[data-theme="dark"][data-variant="b"] .al:has(.dot.red) { background: #1d1416; border-color: #6b2328; }
+html[data-theme="dark"][data-variant="b"] :is(.btn, .btn:active) { box-shadow: none; }
+html[data-theme="dark"][data-variant="b"] .tb-bell { background: transparent; }
+html[data-theme="dark"][data-variant="b"] .rbtn { background: #121920; }
+html[data-theme="dark"][data-variant="b"] .rbtn.sel.ok { background: #1f8a4c; color: #fff; }
+html[data-theme="dark"][data-variant="b"] .rbtn.sel.bad { background: #c2373c; color: #fff; }
+html[data-theme="dark"][data-variant="b"] .wn.on { background: var(--pri); color: #fff; }
+html[data-theme="dark"][data-variant="b"] .proc li:last-child { background: var(--pri-s); }
+html[data-theme="dark"][data-variant="b"] .proc li:last-child span { background: var(--pri); color: #fff; }
+
+html[data-theme="dark"][data-variant="c"] .ap-step { background: var(--card); }
+html[data-theme="dark"][data-variant="c"] :is(.ap-top, .wb-side) { background: #000; }
+html[data-theme="dark"][data-variant="c"] .spn { background: var(--card); }
+html[data-theme="dark"][data-variant="c"] .sp.on { background: var(--pri-s) !important; }
+html[data-theme="dark"][data-variant="c"] .sp.on .spn { background: var(--card); border-color: var(--pri); color: var(--pri); box-shadow: none; }
+html[data-theme="dark"][data-variant="c"] .sp.done .spn { background: var(--pri); border-color: var(--pri); color: #fff; }
+html[data-theme="dark"][data-variant="c"] .spl.done { background: var(--pri); }
+html[data-theme="dark"][data-variant="c"] :is(.tbl th, .wt th) { background: #262f38; color: var(--ink); }
+html[data-theme="dark"][data-variant="c"] :is(.wt, .dopt, .flt .sel2, .kts.w .kt) { background: var(--card); }
+html[data-theme="dark"][data-variant="c"] .wt tr:hover td, html[data-theme="dark"][data-variant="c"] .hc:hover { background: var(--l2); }
+html[data-theme="dark"][data-variant="c"] :is(.memo, .ap textarea.memo, .fld .inp, .sel2) { background: var(--l2); }
+html[data-theme="dark"][data-variant="c"] .ch.blue { background: var(--info-s); color: var(--info); }
+html[data-theme="dark"][data-variant="c"] .proc li { background: transparent; }
+html[data-theme="dark"][data-variant="c"] .proc li:last-child { background: var(--pri-s); box-shadow: none; }
+html[data-theme="dark"][data-variant="c"] .proc li:last-child span, html[data-theme="dark"][data-variant="c"] .rk.on .rn, html[data-theme="dark"][data-variant="c"] .rk.on .rb i { background: var(--pri); color: #fff; }
+html[data-theme="dark"][data-variant="c"] .wn.on { background: #262f38; box-shadow: inset 0 -3px 0 var(--pri); }
+
+html[data-theme="dark"][data-variant="d"] .ap, html[data-theme="dark"][data-variant="d"] .wb {
+  background:
+    radial-gradient(600px 380px at 0% 0%, rgba(109, 75, 255, .22) 0%, transparent 70%),
+    radial-gradient(520px 360px at 100% 100%, rgba(224, 94, 200, .16) 0%, transparent 70%), var(--bg);
+}
+html[data-theme="dark"][data-variant="d"] :is(.ap-top, .wb-side, .pastbar) { background: var(--glass); }
+html[data-theme="dark"][data-variant="d"] .ap-step { background: #000; }
+html[data-theme="dark"][data-variant="d"] .tb-ctx { background: #000; color: #fff; box-shadow: 0 0 0 1px #2c3742; }
+html[data-theme="dark"][data-variant="d"] :is(.tb-home, .tb-bell, .tb-theme) { background: rgba(255, 255, 255, .06); border: none; }
+html[data-theme="dark"][data-variant="d"] .tb-home.on { background: var(--grad); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .sp.done.pick { background: transparent !important; }
+html[data-theme="dark"][data-variant="d"] .sp.on .spn { background: rgba(255, 255, 255, .25); color: #fff; box-shadow: none; }
+html[data-theme="dark"][data-variant="d"] .sp.done .spn { background: rgba(52, 211, 153, .2); color: #6ee7b7; }
+html[data-theme="dark"][data-variant="d"] .cd { box-shadow: none; }
+html[data-theme="dark"][data-variant="d"] .cd.hl { background: var(--grad); }
+html[data-theme="dark"][data-variant="d"] .cd.hl :is(h3, .why b, .why span) { color: #fff; }
+html[data-theme="dark"][data-variant="d"] .cd.hl .ch { background: rgba(255, 255, 255, .2); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .cd.hl .gb { background: #fff; color: #12855a; }
+html[data-theme="dark"][data-variant="d"] .cd.hl .why { background: rgba(255, 255, 255, .14); }
+html[data-theme="dark"][data-variant="d"] .cd.hl .btn:not(.dis) { background: #fff; color: #4524d6; }
+html[data-theme="dark"][data-variant="d"] .ai-c { background: linear-gradient(var(--card), var(--card)) padding-box, var(--grad) border-box; border-color: transparent; }
+html[data-theme="dark"][data-variant="d"] :is(.ap, .wb) .btn.lg:not(.dis):not(.warnb) { background: var(--grad); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .ap .cd.hl .btn.lg:not(.dis):not(.warnb) { background: #fff; color: #4524d6; }
+html[data-theme="dark"][data-variant="d"] .btn { background: var(--grad); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .btn.ghost { background: transparent; color: var(--acc-h); border-color: var(--acc-ln); }
+html[data-theme="dark"][data-variant="d"] .btn.warnb { background: linear-gradient(135deg, #f59e0b 0%, #e8590c 100%); color: #fff; }
+html[data-theme="dark"][data-variant="d"] :is(.al, .hc, .rbtn, .act, .dopt, .tbl td, .proc li) { background: var(--l2); }
+html[data-theme="dark"][data-variant="d"] .al:has(.dot.red) { background: linear-gradient(90deg, #3a1418, var(--l2) 70%); }
+html[data-theme="dark"][data-variant="d"] .tbl tr.down td { background: var(--bad-s); }
+html[data-theme="dark"][data-variant="d"] .kts .kt:nth-child(1) { background: var(--ok-s); } html[data-theme="dark"][data-variant="d"] .kts .kt:nth-child(1) b { color: #7ee2a8; }
+html[data-theme="dark"][data-variant="d"] .kts .kt:nth-child(2) { background: var(--warn-s); } html[data-theme="dark"][data-variant="d"] .kts .kt:nth-child(2) b { color: #ffcf7a; }
+html[data-theme="dark"][data-variant="d"] .kts .kt:nth-child(3) { background: var(--pri-s); } html[data-theme="dark"][data-variant="d"] .kts .kt:nth-child(3) b { color: #c4b5fd; }
+html[data-theme="dark"][data-variant="d"] .rk.on { background: var(--pri-s); }
+html[data-theme="dark"][data-variant="d"] :is(.rk.on .rn, .rk.on .rb i, .proc li:last-child span) { background: var(--grad); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .proc li:last-child { background: var(--pri-s); }
+html[data-theme="dark"][data-variant="d"] .rbtn.sel.ok { background: linear-gradient(135deg, #22c38e, #12855a); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .rbtn.sel.bad { background: linear-gradient(135deg, #ff6b7a, #d63a4a); color: #fff; }
+html[data-theme="dark"][data-variant="d"] .wn.on { background: var(--grad); color: #fff; box-shadow: none; }
+html[data-theme="dark"][data-variant="d"] .cnt { background: var(--grad); }
+html[data-theme="dark"][data-variant="d"] .panel { background: rgba(22, 29, 36, .95); }
