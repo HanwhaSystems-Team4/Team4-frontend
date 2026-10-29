@@ -6,6 +6,7 @@
 html[data-ab]:not(:has(.pvw)), html[data-ab]:not(:has(.pvw)) body { height: 100%; overflow: hidden; }
 html[data-ab] #root { min-height: 100vh; box-sizing: border-box; padding-top: 52px; }
 html[data-ab] .ap { zoom: min(calc((var(--vw, 1080) - 24) / 1080), calc((var(--vh, 792) - 64) / 740), 1.6); }
+html[data-ab]:is([data-variant="c"], [data-variant="d"]) .ap { zoom: min(calc((var(--vw, 1280) - 24) / 1280), calc((var(--vh, 864) - 64) / 800), 1.6); } /* 산업 관제형(C)은 1280 × 800 */
 html[data-ab] .wb { zoom: min(calc((var(--vw, 1280) - 24) / 1280), calc((var(--vh, 672) - 64) / 620), 1.6); }
 html[data-ab] .wb-main { min-height: 0; overflow: auto; }
 html[data-ab] .pvw .ap, html[data-ab] .pvw .wb { zoom: 1; }

@@ -11,7 +11,7 @@ import { DiagnosisScreen } from "./Diagnosis";
 import { ActionScreen, CallScreen, HandoverScreen, MonitorScreen, ReportScreen } from "./Flow";
 import { InstructionScreen, NextStageScreen, PendingModal } from "./Instruction";
 import { LockScreen, PrecheckScreen } from "./Lock";
-import { PastScreen, type PastData } from "./Past";
+import { mergeInspectAct, PastScreen, type PastData } from "./Past";
 
 type Stage = "alarm" | "diagnosis" | "lock";
 type Body = { seq: number; type: string; [k: string]: unknown };
@@ -30,6 +30,9 @@ export function stepNumber(s: SessionView, stage: Stage, reportOpen = true): num
   if (ACTION.has(kind) || kind === "monitor_close" || (CALL.has(kind) && s.action?.done_at)) return 4;
   return 3;
 }
+
+/** 페이지 수정 후보(D)는 점검과 조치를 한 단계로 보인다(0010). 후보는 CSS 속성이라 이벤트 때 읽는다. */
+const mergedSteps = () => document.documentElement.dataset.variant === "d";
 
 export interface SessionProps {
   api: Api;
@@ -121,7 +124,7 @@ export function Session(p: SessionProps) {
   };
   const openPast = async (n: number) => {
     const h = await loadHistory();
-    const recs = h?.steps[n - 1]?.records ?? [];
+    const recs = (h && mergedSteps() ? mergeInspectAct(h) : h)?.steps[n - 1]?.records ?? [];
     if (recs.length) setPast({ no: n, idx: recs.length - 1 });
   };
 
@@ -260,7 +263,7 @@ export function Session(p: SessionProps) {
         api={api}
         sid={sid}
         s={s}
-        data={hist}
+        data={mergedSteps() ? mergeInspectAct(hist) : hist}
         no={past.no}
         idx={past.idx}
         onIdx={(i) => setPast({ ...past, idx: i })}

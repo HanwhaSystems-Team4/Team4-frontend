@@ -1,4 +1,4 @@
-﻿# A/B 테스트 한 번에 켜기: 백엔드(docker compose) → 정비자 · 파트장 화면(A/B 모드) → 브라우저.
+# A/B 테스트 한 번에 켜기: 백엔드(docker compose) → 정비자 · 파트장 화면(A/B 모드) → 브라우저.
 # AB테스트_실행.bat이 부른다. 백엔드 레포는 이 레포 옆 폴더(..\c1a15-maint-guide)를 기본으로 쓰고, C1A15_DIR로 바꿀 수 있다.
 $ErrorActionPreference = "Continue"
 $front = (Resolve-Path "$PSScriptRoot\..\..").Path

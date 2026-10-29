@@ -2,14 +2,15 @@
 // 화면 구성 · 버튼 · 이동 순서(DOM)는 그대로이고 겉모양과 배치만 바뀐다. 평소 개발 · 빌드(VITE_AB_TEST 없음)에서는 쓰지 않는다.
 
 import { useState } from "react";
+import { initThemeMode } from "./theme-mode";
 
 export type VariantId = "a" | "b" | "c" | "d";
 
 export const VARIANTS: { id: VariantId; name: string; ref: string }[] = [
   { id: "a", name: "현재 버전", ref: "지금 화면" },
-  { id: "b", name: "현장 터치형", ref: "ISA-101 HMI · Material 3" },
-  { id: "c", name: "업무 도구형", ref: "IBM Carbon · Atlassian" },
-  { id: "d", name: "플로팅 벤토형", ref: "Apple 벤토 그리드 · Dynamic Island · Arc" },
+  { id: "b", name: "플로팅 벤토형", ref: "Apple 벤토 그리드 · Dynamic Island · Arc" },
+  { id: "c", name: "산업 관제형", ref: "ISA-101 HMI · SCADA/MES · IBM Plex" },
+  { id: "d", name: "페이지 수정", ref: "C 계승 + 진단 3열(시안 03) · 점검·조치 통합" },
 ];
 
 const KEY = "team4.variant";
@@ -139,7 +140,7 @@ function isVariant(v: string | null): v is VariantId {
   return VARIANTS.some((x) => x.id === v);
 }
 
-/** 주소의 ?v= 를 먼저, 없으면 이 탭에서 고른 값을 쓴다. 탭마다 따로 기억해 4개 버전을 탭으로 나란히 띄울 수 있다. */
+/** 주소의 ?v= 를 먼저, 없으면 이 탭에서 고른 값을 쓴다. 탭마다 따로 기억해 여러 버전을 탭으로 나란히 띄울 수 있다. */
 export function initVariant(): VariantId {
   const q = new URLSearchParams(window.location.search).get("v");
   let v: VariantId = "a";
@@ -202,6 +203,8 @@ function fitToWindow(): void {
 
 export function setVariant(v: VariantId): void {
   document.documentElement.dataset.variant = v;
+  // 후보를 바꿀 때마다 기억한 다크 모드를 다시 적용한다(C도 라이트 · 다크를 가진다, 0009).
+  initThemeMode();
   try {
     sessionStorage.setItem(KEY, v);
   } catch {

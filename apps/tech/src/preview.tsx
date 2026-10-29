@@ -59,8 +59,11 @@ const SCREENS: { id: string; label: string; render: () => ReactNode }[] = [
     id: "home",
     label: "T02 홈",
     render: () => {
-      const home = load<Home>("home-in-progress");
-      home.alarms.unshift({ ...home.alarms[0], alarm_id: 999, status: "new", session_id: null, progress: null });
+      const home = load<Home>("home-done"); // 새 알람 · 점검 중 · 승인 대기 보고서
+      home.recent_reports.push(
+        { ...home.recent_reports[0], report_id: 98, session_id: 9801, equipment_id: "M-07", cause: "냉각 팬 베어링 마모", status: "approved", confirmed_at: "2026-10-12T14:20:00+09:00" },
+        { ...home.recent_reports[0], report_id: 97, session_id: 9701, equipment_id: "M-12", cause: "냉각수 부족", status: "rejected", confirmed_at: "2026-10-12T09:05:00+09:00" },
+      );
       return (
         <Shell context={false}>
           <HomeScreen home={home} onOpen={noop} />

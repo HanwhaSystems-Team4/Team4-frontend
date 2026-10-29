@@ -3,7 +3,9 @@
 
 import { GradeBadge, Icon, RecordCard, type SessionWithPreview } from "@team4/ui";
 
-type Diag = Pick<SessionWithPreview, "probabilities" | "evidence" | "cause_names" | "similar_cards" | "low_evidence" | "preview">;
+type Diag = Pick<SessionWithPreview, "probabilities" | "evidence" | "cause_names" | "similar_cards" | "low_evidence" | "preview"> & {
+  alarm?: SessionWithPreview["alarm"]; // 지난 화면(T15)의 진단 스냅샷에는 없다
+};
 
 export function rankRows(s: Diag): { code: string; name: string; pct: number; n: number }[] {
   return Object.entries(s.probabilities)
@@ -66,9 +68,34 @@ export function DiagnosisScreen({
   past?: boolean; // T15 / diagnosis: 그때의 원인 순위 · 첫 지시, 조작은 잠김
 }) {
   const rows = rankRows(s);
+  const k = s.similar_cards.length;
+  // 산업 관제형(C) 제목 · 강조용: 찾은 전체 n건 중 상위 k건(0009). 알람 블록의 similar_count가 없으면 근거(상위 10건 기준) 합계로.
+  const basis = Object.values(s.evidence).reduce((a, b) => a + b, 0);
+  const n = Math.max(k, s.alarm?.similar_count ?? basis);
   return (
     <div className={past ? "ap-body past" : "ap-body"}>
       <div className="g64">
+        {s.alarm?.sensors?.length ? (
+          // 페이지 수정 후보(D)에서만 보이는 왼쪽 열(0010): 알람 시점의 센서 값을 보며 원인 순위가 맞는지 확인한다. 값 · 범위 · 상태는 서버가 준 그대로.
+          <div className="cd snp">
+            <div className="cd-h">
+              <Icon name="thermometer" />
+              <b>센서 값 · 알람 시점</b>
+            </div>
+            {s.alarm.sensors.map((x) => (
+              <div className={`snp-r${x.out_of_range ? " out" : ""}`} key={x.key}>
+                <span className="snp-n">{x.name}</span>
+                <b className="snp-v">{x.value_text}</b>
+                <span className="snp-b">평소 {x.range_text}</span>
+                <span className={`ch ${x.out_of_range ? "red" : "gray"}`}>{x.status}</span>
+              </div>
+            ))}
+            <div className="hint">
+              <Icon name="info" />
+              센서 값을 보며 AI가 고른 원인 순위와 다음 점검이 맞는지 확인합니다. 빨강은 안정 범위 밖입니다.
+            </div>
+          </div>
+        ) : null}
         <div>
           <div className="cd ">
             <div className="cd-h">
@@ -96,9 +123,11 @@ export function DiagnosisScreen({
           <div className="cd mt">
             <div className="cd-h">
               <Icon name="history" />
-              <b>비슷한 과거 기록 {s.similar_cards.length}건 · 상위 10건 중</b>
+              <b data-n={n} data-k={k}>
+                비슷한 과거 기록 {k}건 · 상위 10건 중
+              </b>
             </div>
-            <div className="hcs">
+            <div className="hcs" data-rest={n - k}>
               {s.similar_cards.map((c) => (
                 <RecordCard key={c.record_id} card={c} onOpen={onRecord} />
               ))}
