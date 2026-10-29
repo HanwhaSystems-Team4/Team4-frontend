@@ -1,0 +1,90 @@
+/*
+ * A/B 테스트 글꼴 후보(결정 0006). variant.tsx가 A/B 모드에서만 이 파일을 불러오고, <html data-font="x">로 --f 하나만 바꾼다.
+ * 화면은 모두 font-family: var(--f)라서 디자인 후보(A ~ D) · 다크 모드와 겹쳐 쓸 수 있다. 숫자용 --mono는 그대로다.
+ * 웹 사용이 허용된 글꼴만 넣는다: 나눔 · 마루 부리는 네이버 공식 웹폰트 서버, 카카오 글씨는 공식 zip의 woff2(OFL, fonts/kakao),
+ * IBM Plex Sans KR · Google Sans는 Google Fonts(OFL, variant.tsx가 고를 때 불러옴). 글꼴은 고를 때 처음 내려받는다.
+ */
+
+/* ── 네이버(hangeul.pstatic.net, 네이버 글꼴 라이선스). 공식 CSS는 굵기마다 이름이 달라 굵기를 하나의 이름으로 묶었다 ── */
+/* 가변 글꼴(NanumSquareNeo-Variable)은 Chrome에서 읽기 실패해 굵기별 파일을 쓴다 */
+@font-face { font-family: "T4 NanumSquareNeo"; font-weight: 300; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-aLt.woff) format("woff"); }
+@font-face { font-family: "T4 NanumSquareNeo"; font-weight: 400 500; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-bRg.woff) format("woff"); }
+@font-face { font-family: "T4 NanumSquareNeo"; font-weight: 600 700; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-cBd.woff) format("woff"); }
+@font-face { font-family: "T4 NanumSquareNeo"; font-weight: 800; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-dEb.woff) format("woff"); }
+@font-face { font-family: "T4 NanumSquareNeo"; font-weight: 900; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/NanumSquareNeo/NanumSquareNeoTTF-eHv.woff) format("woff"); }
+@font-face { font-family: "T4 MaruBuri"; font-weight: 200; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-ExtraLight.woff2) format("woff2"); }
+@font-face { font-family: "T4 MaruBuri"; font-weight: 300; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Light.woff2) format("woff2"); }
+@font-face { font-family: "T4 MaruBuri"; font-weight: 400; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Regular.woff2) format("woff2"); }
+@font-face { font-family: "T4 MaruBuri"; font-weight: 500 600; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-SemiBold.woff2) format("woff2"); }
+@font-face { font-family: "T4 MaruBuri"; font-weight: 700 900; font-display: swap; src: url(https://hangeul.pstatic.net/hangeul_static/webfont/MaruBuri/MaruBuri-Bold.woff2) format("woff2"); }
+
+/* ── 카카오 글씨(OFL, 공식 zip의 woff2를 fonts/kakao에 둠) ── */
+@font-face { font-family: "T4 KakaoSmall"; font-weight: 300; font-display: swap; src: url("../../fonts/kakao/KakaoSmallSans-Light.woff2") format("woff2"); }
+@font-face { font-family: "T4 KakaoSmall"; font-weight: 400 500; font-display: swap; src: url("../../fonts/kakao/KakaoSmallSans-Regular.woff2") format("woff2"); }
+@font-face { font-family: "T4 KakaoSmall"; font-weight: 600 900; font-display: swap; src: url("../../fonts/kakao/KakaoSmallSans-Bold.woff2") format("woff2"); }
+@font-face { font-family: "T4 KakaoBig"; font-weight: 300 500; font-display: swap; src: url("../../fonts/kakao/KakaoBigSans-Regular.woff2") format("woff2"); }
+@font-face { font-family: "T4 KakaoBig"; font-weight: 600 700; font-display: swap; src: url("../../fonts/kakao/KakaoBigSans-Bold.woff2") format("woff2"); }
+@font-face { font-family: "T4 KakaoBig"; font-weight: 800 900; font-display: swap; src: url("../../fonts/kakao/KakaoBigSans-ExtraBold.woff2") format("woff2"); }
+
+/* ── Selawik(Microsoft, OFL, fonts/selawik) ── */
+@font-face { font-family: "T4 Selawik"; font-weight: 300; font-display: swap; src: url("../../fonts/selawik/selawkl.woff2") format("woff2"); }
+@font-face { font-family: "T4 Selawik"; font-weight: 350; font-display: swap; src: url("../../fonts/selawik/selawksl.woff2") format("woff2"); }
+@font-face { font-family: "T4 Selawik"; font-weight: 400 500; font-display: swap; src: url("../../fonts/selawik/selawk.woff2") format("woff2"); }
+@font-face { font-family: "T4 Selawik"; font-weight: 600; font-display: swap; src: url("../../fonts/selawik/selawksb.woff2") format("woff2"); }
+@font-face { font-family: "T4 Selawik"; font-weight: 700 900; font-display: swap; src: url("../../fonts/selawik/selawkb.woff2") format("woff2"); }
+
+/* ── 재배포가 안 되는 브랜드 글꼴: 저장소에 없고 이 PC의 public/fonts-local에만 있다(scripts/ab-test/ab-fonts.ps1이 복사).
+      파일이 없는 PC에서는 다음 글꼴(프리텐다드)로 나온다. 기기에 설치돼 있으면 local()을 먼저 쓴다 ── */
+@font-face { font-family: "T4 Segoe Variable"; font-weight: 300 700; font-display: swap;
+  src: local("Segoe UI Variable Text"), local("Segoe UI Variable"), url("/fonts-local/SegoeUI-VF.ttf") format("truetype"); }
+@font-face { font-family: "T4 Amazon Ember"; font-weight: 300; font-display: swap; src: url("/fonts-local/AmazonEmber_Lt.ttf") format("truetype"); }
+@font-face { font-family: "T4 Amazon Ember"; font-weight: 400; font-display: swap; src: url("/fonts-local/AmazonEmber_Rg.ttf") format("truetype"); }
+@font-face { font-family: "T4 Amazon Ember"; font-weight: 500 600; font-display: swap; src: url("/fonts-local/Amazon-Ember-Medium.ttf") format("truetype"); }
+@font-face { font-family: "T4 Amazon Ember"; font-weight: 700; font-display: swap; src: url("/fonts-local/AmazonEmber_Bd.ttf") format("truetype"); }
+@font-face { font-family: "T4 Amazon Ember"; font-weight: 800 900; font-display: swap; src: url("/fonts-local/AmazonEmber_He.ttf") format("truetype"); }
+
+/* Apple(사용 범위 제한, 이 PC 전용). SF Pro · SF Compact · New York은 가변 글꼴 하나, SF Mono는 굵기별 */
+@font-face { font-family: "T4 SF Pro"; font-weight: 100 900; font-display: swap; src: url("/fonts-local/SF-Pro.ttf") format("truetype"); }
+@font-face { font-family: "T4 SF Compact"; font-weight: 100 900; font-display: swap; src: url("/fonts-local/SF-Compact.ttf") format("truetype"); }
+@font-face { font-family: "T4 New York"; font-weight: 400 900; font-display: swap; src: url("/fonts-local/NewYork.ttf") format("truetype"); }
+@font-face { font-family: "T4 SF Mono"; font-weight: 300; font-display: swap; src: url("/fonts-local/SF-Mono-Light.otf") format("opentype"); }
+@font-face { font-family: "T4 SF Mono"; font-weight: 400; font-display: swap; src: url("/fonts-local/SF-Mono-Regular.otf") format("opentype"); }
+@font-face { font-family: "T4 SF Mono"; font-weight: 500; font-display: swap; src: url("/fonts-local/SF-Mono-Medium.otf") format("opentype"); }
+@font-face { font-family: "T4 SF Mono"; font-weight: 600; font-display: swap; src: url("/fonts-local/SF-Mono-Semibold.otf") format("opentype"); }
+@font-face { font-family: "T4 SF Mono"; font-weight: 700; font-display: swap; src: url("/fonts-local/SF-Mono-Bold.otf") format("opentype"); }
+@font-face { font-family: "T4 SF Mono"; font-weight: 800 900; font-display: swap; src: url("/fonts-local/SF-Mono-Heavy.otf") format("opentype"); }
+
+/* ── 후보별 글꼴 묶음. 한글이 없는 글꼴(Google Sans)은 한글을 프리텐다드로 채운다 ── */
+html[data-font="nanum-square-neo"] { --f: "T4 NanumSquareNeo", "Pretendard", sans-serif; }
+html[data-font="nanum-gothic"] { --f: "Nanum Gothic", "Pretendard", sans-serif; }
+html[data-font="maru-buri"] { --f: "T4 MaruBuri", "Pretendard", serif; }
+html[data-font="kakao-small"] { --f: "T4 KakaoSmall", "Pretendard", sans-serif; }
+html[data-font="kakao-big"] { --f: "T4 KakaoBig", "Pretendard", sans-serif; }
+html[data-font="ibm-plex-kr"] { --f: "IBM Plex Sans KR", "Pretendard", sans-serif; }
+html[data-font="google-sans"] { --f: "Google Sans", "Pretendard", sans-serif; }
+html[data-font="google-sans-flex"] { --f: "Google Sans Flex", "Pretendard", sans-serif; }
+html[data-font="roboto"] { --f: "Roboto", "Pretendard", sans-serif; }
+html[data-font="inter"] { --f: "Inter", "Pretendard", sans-serif; }
+html[data-font="red-hat"] { --f: "Red Hat Text", "Pretendard", sans-serif; }
+html[data-font="ubuntu"] { --f: "Ubuntu", "Pretendard", sans-serif; }
+html[data-font="segoe-variable"] { --f: "T4 Segoe Variable", "Malgun Gothic", "Pretendard", sans-serif; }
+html[data-font="selawik"] { --f: "T4 Selawik", "Pretendard", sans-serif; }
+html[data-font="sf-pro"] { --f: "T4 SF Pro", "Apple SD Gothic Neo", "Pretendard", sans-serif; }
+html[data-font="sf-compact"] { --f: "T4 SF Compact", "Apple SD Gothic Neo", "Pretendard", sans-serif; }
+html[data-font="new-york"] { --f: "T4 New York", "T4 MaruBuri", "Pretendard", serif; }
+html[data-font="sf-mono"] { --f: "T4 SF Mono", "Pretendard", monospace; }
+html[data-font="amazon-ember"] { --f: "T4 Amazon Ember", "Pretendard", sans-serif; }
+html[data-font="ibm-plex"] { --f: "IBM Plex Sans", "IBM Plex Sans KR", "Pretendard", sans-serif; }
+/* 고정폭(코드용) 글꼴도 본문에 써 본다. 숫자 열 맞춤은 좋지만 글자 폭이 넓다 */
+html[data-font="jetbrains-mono"] { --f: "JetBrains Mono", "D2Coding", "Pretendard", monospace; }
+html[data-font="google-sans-code"] { --f: "Google Sans Code", "Pretendard", monospace; }
+html[data-font="system"] { --f: system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+
+/* ── 전환 막대 안 글꼴 고르기 ── */
+.abx .abx-font { display: inline-flex; align-items: center; gap: 6px; padding: 0 4px 0 10px; margin-left: 2px; border-left: 1px solid #3f3f46; color: #a1a1aa; }
+.abx .abx-font select {
+  appearance: none; cursor: pointer; padding: 6px 26px 6px 10px; border: 0; border-radius: 7px; background: #3f3f46; color: #fff; font: inherit;
+  background-image: linear-gradient(45deg, transparent 50%, #d4d4d8 50%), linear-gradient(135deg, #d4d4d8 50%, transparent 50%);
+  background-position: calc(100% - 13px) 50%, calc(100% - 9px) 50%; background-size: 4px 4px; background-repeat: no-repeat;
+}
+.abx .abx-font select:focus-visible { outline: 2px solid #ea580c; outline-offset: 1px; }

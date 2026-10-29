@@ -6,6 +6,7 @@
 ## [Unreleased]
 
 ### 추가
+- A/B 테스트 글꼴 후보: 전환 막대의 '글꼴' 메뉴(주소 `?font=`)로 프리텐다드 · 나눔스퀘어 네오 · 나눔고딕 · 마루 부리 · 카카오 작은글씨 · 카카오 큰글씨 · IBM Plex Sans KR · Google Sans · Google Sans Flex · Roboto · Inter · Red Hat Text · Ubuntu · IBM Plex Sans · Selawik · Segoe UI Variable · Amazon Ember · SF Pro · SF Compact · New York · SF Mono · JetBrains Mono · Google Sans Code · 시스템 글꼴(24종)을 바꿔 봄. 재배포가 안 되는 Apple · Segoe · Amazon 글꼴은 저장소에 없이 시연 PC에만 복사(`ab-fonts.ps1`). 디자인 후보 · 다크 모드와 겹쳐 쓸 수 있음 → [0006](docs/decisions/0006-AB-테스트용-글꼴-후보.md)
 - 다크 모드: 정비자 앱 상단 바 · 파트장 앱 본문 머리의 '다크' 버튼으로 어두운 화면을 켜고 끔. 이 기기에 기억하고 모든 디자인 후보에 적용 → [0005](docs/decisions/0005-다크-모드-기능.md)
 - A/B 테스트 모드: 디자인 후보 B 현장 터치형 · C 업무 도구형 · D 플로팅 벤토형을 화면 위 막대로 전환(화면 순서는 그대로), 화면 틀을 창에 맞춰 페이지 스크롤 없이 표시, 백엔드 없는 화면 미리보기 `preview.html`, 원클릭 `AB테스트_실행.bat`, 비교 기준으로 조장님 레포 원본(E)을 새 탭으로 여는 링크 → [0004](docs/decisions/0004-AB-테스트용-디자인-후보-3개.md)
 

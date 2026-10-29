@@ -27,3 +27,6 @@ dist-ssr
 dist-types
 *.tsbuildinfo
 .env
+
+# 재배포가 안 되는 브랜드 글꼴(이 PC에서만, scripts/ab-test/ab-fonts.ps1이 복사, 결정 0006)
+apps/*/public/fonts-local/

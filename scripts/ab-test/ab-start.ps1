@@ -42,6 +42,7 @@ Write-Host "백엔드 준비됨 (정비자 8081 · 파트장 8082)"
 Step "3/4 화면 켜기 (A/B 모드)"
 Push-Location $front
 if (-not (Test-Path "node_modules")) { Write-Host "처음 한 번 npm install..."; npm install }
+& "$PSScriptRoot\ab-fonts.ps1"  # 재배포 안 되는 브랜드 글꼴을 이 PC의 public/fonts-local에 복사(결정 0006)
 foreach ($app in @(@{ name = "tech"; port = 5181 }, @{ name = "lead"; port = 5182 })) {
   if (PortOpen $app.port) {
     Write-Host "$($app.name) 화면이 이미 $($app.port) 포트에서 돌고 있습니다. 후보 전환 막대가 안 보이면 AB테스트_종료.bat 후 다시 실행하세요."
