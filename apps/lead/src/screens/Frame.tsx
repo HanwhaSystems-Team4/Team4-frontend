@@ -1,7 +1,7 @@
-// 파트장 앱 틀(R-NAV): 왼쪽 고정 메뉴 4개 + 아래 사용자, 본문 머리(제목 · 시각). 메뉴 이동은 본문만 바꾼다.
+// 파트장 앱 틀(R-NAV): 왼쪽 고정 메뉴 4개 + 아래 사용자, 본문 머리(제목 · 시각 · 다크 모드 버튼). 메뉴 이동은 본문만 바꾼다.
 
 import type { ReactNode } from "react";
-import { dateDay, Icon } from "@team4/ui";
+import { dateDay, Icon, ThemeToggle } from "@team4/ui";
 
 export type Menu = "approvals" | "calls" | "grades" | "audit";
 
@@ -49,6 +49,7 @@ export function Frame({
         <div className="wb-top">
           <h2>{title}</h2>
           <span className="sm">{now ? dateDay(now) : ""}</span>
+          <ThemeToggle className="wb-theme" />
         </div>
         {children}
       </div>

@@ -187,6 +187,15 @@ function CheckLeft({ r, onManual, onRecord }: { r: Rec; onManual: () => void; on
   );
 }
 
+/** 페이지 수정 후보(D, 0010): 점검(3)과 조치(4)를 한 단계로 보이므로 지난 화면도 두 단계 기록을 이어서 본다. 서버의 단계 구분은 그대로다. */
+export function mergeInspectAct(data: PastData): PastData {
+  const a = data.steps[2]?.records ?? [];
+  const b = data.steps[3]?.records ?? [];
+  const all = [...a, ...b];
+  const records = all.map((r, i) => ({ ...r, position: `${i + 1} / ${all.length}` }));
+  return { ...data, steps: data.steps.map((s, i) => (i === 2 ? { ...s, records } : s)) };
+}
+
 export interface PastProps {
   api: Api;
   sid: number;
@@ -256,6 +265,7 @@ export function PastScreen(p: PastProps) {
     body = (
       <DiagnosisScreen
         s={{
+          alarm: p.data.steps[0]?.records.find((x) => x.kind === "alarm")?.alarm ?? undefined, // 찾은 전체 건수(n건 중 상위 k건, 0009)
           probabilities: r.probabilities ?? {},
           evidence: r.evidence ?? {},
           cause_names: r.cause_names ?? {},
@@ -414,7 +424,7 @@ export function PastScreen(p: PastProps) {
     <>
       <div className="pastbar">
         <Icon name="history" />
-        <b>지난 화면 · {step.name}</b>
+        <b data-step={p.no}>지난 화면 · {step.name}</b>
         <span className="tt">{r.band}</span>
         {p.unsent ? <span className="ch amber">지금 {p.unsent.section} 입력(보내지 않음)은 그대로</span> : null}
         <span className="pn">

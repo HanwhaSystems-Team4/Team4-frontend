@@ -47,7 +47,13 @@ export function AlarmScreen({ s, onNext, past }: { s: Pick<SessionView, "alarm">
               <h3>{a.group_name}</h3>
               <div className="tags">
                 <span className="ch blue">증상군 · {a.system}</span>
-                {a.out_of_range_count > 0 ? <span className="ch red">센서 {a.out_of_range_count}개 이탈</span> : null}
+                {a.out_of_range_count > 0 ? <span
+                    className="ch red"
+                    data-n={a.out_of_range_count}
+                    data-hidden={Math.max(0, a.out_of_range_count - a.sensors.filter((x) => x.out_of_range).length)}
+                  >
+                    센서 {a.out_of_range_count}개 이탈
+                  </span> : null}
               </div>
             </div>
           </div>

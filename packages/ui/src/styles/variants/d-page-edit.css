@@ -1,0 +1,52 @@
+/*
+ * 후보 D · 페이지 수정(결정 0010) — C 산업 관제형(c-industrial.css)을 그대로 이어받고(그 파일의 규칙이 D에도 걸린다) 아래 세 가지만 다르다.
+ *   1. 진단 화면 3열: 센서 값 | 원인 순위 + 유사 기록 | 다음 점검 (시안 03 · 진단)
+ *   2. 점검과 조치를 한 단계로: 진행 레일 5칸 → 4칸(점검·조치), 지난 화면 띠 이름도
+ *   3. 알람 단계 이름을 "센서 확인"으로(알람 화면은 센서 값을 보고 정상 범위를 벗어난 것을 확인하는 화면)
+ * 화면 · 버튼 · 이동 순서(DOM)는 그대로이고, 이 파일의 규칙은 [data-variant="d"]에서만 걸린다. A · B · C · E는 바뀌지 않는다.
+ */
+
+/* ── 1. 진단 3열: 센서 값 패널(다른 후보에서는 숨김) ── */
+.snp { display: none; }
+[data-variant="d"] .snp { display: block; }
+[data-variant="d"] .g64:has(> .snp) { grid-template-columns: minmax(0, .85fr) minmax(0, 1.35fr) minmax(0, 1fr); }
+[data-variant="d"] .snp-r {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-areas: "n v" "b c"; align-items: center; column-gap: 8px; row-gap: 2px;
+  padding: 9px 10px 9px 12px; margin-bottom: 4px; border: 1px solid var(--ln); background: var(--panel-2); box-shadow: inset 3px 0 0 #5b636d;
+}
+[data-variant="d"] .snp-n { grid-area: n; font-size: 13px; color: var(--sub); }
+[data-variant="d"] .snp-v { grid-area: v; justify-self: end; font: 700 17px var(--mono); color: var(--ink); }
+[data-variant="d"] .snp-b { grid-area: b; font: 400 11.5px var(--mono); color: var(--mut); }
+[data-variant="d"] .snp-r > .ch { grid-area: c; justify-self: end; }
+[data-variant="d"] .snp-r.out { background: var(--bad-s); border-color: var(--bad-b); box-shadow: inset 3px 0 0 var(--bad); }
+[data-variant="d"] .snp-r.out .snp-v { color: var(--bad-v); }
+[data-variant="d"] .snp .hint { margin-top: 10px; }
+/* 가운데 열이 좁아져서 유사 기록 카드는 세로로 쌓는다(3칸 가로 배치는 옆 열로 넘친다) */
+[data-variant="d"] .g64:has(> .snp) .hcs { grid-template-columns: minmax(0, 1fr); gap: 6px; }
+[data-variant="d"] .g64:has(> .snp) .hcs .hc { padding-top: 20px; }
+
+/* ── 2. 점검과 조치를 한 칸으로 (진행 레일 자식: 1 알람 · 2 선 · 3 진단 · 4 선 · 5 점검 · 6 선 · 7 조치 · 8 선 · 9 보고서) ── */
+[data-variant="d"] .ap-step > .sp:nth-child(7), [data-variant="d"] .ap-step > .spl:nth-child(6) { display: none; }
+/* 이름을 ::before로 바꿔 쓴다(원래 글자는 숨김). 번호 칸(.spn)은 그대로 둔다 */
+[data-variant="d"] .ap-step > .sp:is(:nth-child(1), :nth-child(5)) { font-size: 0; }
+[data-variant="d"] .ap-step > .sp:is(:nth-child(1), :nth-child(5))::before { order: 2; font: inherit; font-size: 13.5px; font-weight: inherit; }
+[data-variant="d"] .ap-step > .sp:nth-child(1)::before { content: "센서 확인"; }
+[data-variant="d"] .ap-step > .sp:nth-child(5)::before { content: "점검 · 조치"; }
+[data-variant="d"] .ap-step > .sp:is(:nth-child(1), :nth-child(5)) > .spn { order: 1; }
+[data-variant="d"] .ap-step > .sp:is(:nth-child(1), :nth-child(5)).pick::after { order: 3; }
+/* 조치 중(원래 7번이 현재 단계)이면 합친 5번 칸이 현재 단계 */
+[data-variant="d"] .ap-step:has(> .sp.on:nth-child(7)) > .sp:nth-child(5) {
+  color: var(--ink); font-weight: 700; background: var(--pri-s) !important; box-shadow: inset 0 2px 0 var(--acc) !important;
+}
+[data-variant="d"] .ap-step:has(> .sp.on:nth-child(7)) > .sp:nth-child(5) > .spn { color: var(--acc-h); }
+[data-variant="d"] .ap-step:has(> .sp.on:nth-child(7)) > .sp:nth-child(5) > .spn .ic { display: none; }
+[data-variant="d"] .ap-step:has(> .sp.on:nth-child(7)) > .sp:nth-child(5) > .spn::before { content: "03"; }
+[data-variant="d"] .ap-step:has(> .sp.on:nth-child(7)) > .sp:nth-child(5)::after { display: none; }
+/* 보고서 번호는 05가 아니라 04 */
+[data-variant="d"] .ap-step > .sp:nth-child(9):not(.done) > .spn { font-size: 0; }
+[data-variant="d"] .ap-step > .sp:nth-child(9):not(.done) > .spn::before { content: "04"; font-size: 12.5px; }
+
+/* ── 3. 지난 화면 띠의 단계 이름(알람 → 센서 확인, 점검 → 점검 · 조치) ── */
+[data-variant="d"] .pastbar > b[data-step="1"], [data-variant="d"] .pastbar > b[data-step="3"] { font-size: 0; }
+[data-variant="d"] .pastbar > b[data-step="1"]::after { content: "지난 화면 · 센서 확인"; font-size: 15.5px; }
+[data-variant="d"] .pastbar > b[data-step="3"]::after { content: "지난 화면 · 점검 · 조치"; font-size: 15.5px; }

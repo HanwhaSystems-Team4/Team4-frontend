@@ -5,7 +5,7 @@ import { act, cleanup, fireEvent, render, waitFor } from "@testing-library/react
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { StepBar, type Api, type SessionView } from "@team4/ui";
 import { CallScreen } from "../screens/Flow";
-import { PastScreen, type PastData } from "../screens/Past";
+import { mergeInspectAct, PastScreen, type PastData } from "../screens/Past";
 import { Session } from "../screens/Session";
 
 const fx = import.meta.glob("./fixtures/*.json", { eager: true, import: "default" }) as Record<string, unknown>;
@@ -80,6 +80,30 @@ describe("T15 지난 화면 — 띠 · 보기 상태(AC-41)", () => {
     expect(d.querySelector(".pastbar .tt")?.textContent).toMatch(/그때의 원인 순위 · 첫 지시$/);
     expect(d.querySelector(".nx h3")?.textContent).toBe("흡기 필터 육안 점검");
     expect(btn(d, "점검 시작").className).toContain("dis");
+  });
+
+  it("페이지 수정(D): 점검(3)과 조치(4) 기록을 한 단계로 이어 붙이고 위치를 다시 매긴다(0010)", () => {
+    const h = load<PastData>("s05-history-open");
+    const n = h.steps[2].records.length + h.steps[3].records.length;
+    const merged = mergeInspectAct(h);
+    expect(merged.steps[2].records).toHaveLength(n);
+    expect(merged.steps[2].records.map((r) => r.position)).toEqual(Array.from({ length: n }, (_, i) => `${i + 1} / ${n}`));
+    expect(merged.steps[0]).toBe(h.steps[0]); // 다른 단계는 그대로
+    expect(h.steps[2].records).toHaveLength(n - h.steps[3].records.length); // 원본은 바뀌지 않는다
+    const { container } = past(merged, 3, n - 1);
+    expect(container.querySelector(".pastbar .pn b")?.textContent).toBe(`${n} / ${n}`);
+    expect(container.querySelector(".pastbar > b")?.getAttribute("data-step")).toBe("3");
+  });
+
+  it("지난 진단 화면도 비슷한 과거 기록 n건 중 상위 k건의 n을 알람 단계 기록에서 가져온다(0009)", () => {
+    const h = load<PastData>("s05-history-open");
+    const n = h.steps[0].records[0].alarm!.similar_count;
+    const k = h.steps[1].records[0].similar_cards!.length;
+    const { container } = past(h, 2, 0);
+    const b = container.querySelector(".cd-h b[data-n]");
+    expect(b?.getAttribute("data-n")).toBe(String(Math.max(k, n)));
+    expect(b?.getAttribute("data-k")).toBe(String(k));
+    expect(Number(b?.getAttribute("data-n"))).toBeGreaterThanOrEqual(k);
   });
 });
 

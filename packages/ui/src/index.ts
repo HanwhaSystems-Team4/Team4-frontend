@@ -12,3 +12,5 @@ export * from "./api";
 export * from "./components";
 export * from "./format";
 export { Icon } from "./icons";
+export * from "./variant";
+export * from "./theme-mode";

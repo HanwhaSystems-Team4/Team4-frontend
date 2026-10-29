@@ -61,6 +61,18 @@ API_TARGET=http://127.0.0.1:8000 npm run dev:tech
 $env:API_TARGET="http://127.0.0.1:8000"; npm run dev:tech
 ```
 
+## A/B 테스트(디자인 후보 비교)
+
+루트의 `AB테스트_실행.bat`을 더블클릭하면 백엔드(옆 폴더 `c1a15-maint-guide`) → 정비자 · 파트장 화면(A/B 모드) → 브라우저가 차례로 켜진다.
+화면 위 막대에서 A 현재 버전 · B 플로팅 벤토형 · C 산업 관제형(흰색 라이트 + 다크), D 페이지 수정(C 계승 + 진단 3열 · 점검·조치 통합)을 바꿔 본다. 탭마다 따로 기억하고 주소 `?v=b`로도 고를 수 있다.
+
+- 막대 오른쪽 **E 조장님 원본**: 백엔드 레포(c1a15-maint-guide)를 그대로 빌드해 nginx가 띄운 원래 화면을 새 탭으로 연다(정비자 `127.0.0.1:8081`, 파트장 `:8082`, 따로 로그인)
+- `AB테스트_알람만들기.bat`: 테스트 알람 만들기(DEMO-01 ~ 10)
+- `AB테스트_종료.bat`: 화면 끄기(백엔드는 물어보고 멈춤)
+- 백엔드 없이 화면만 비교: `http://localhost:5181/preview.html`, `http://localhost:5182/preview.html`
+- 후보와 바꾼 이유 · 레퍼런스: [0004](docs/decisions/0004-AB-테스트용-디자인-후보-3개.md)
+- 막대 오른쪽 **글꼴** 메뉴: 프리텐다드 · 나눔스퀘어 네오 · 나눔고딕 · 마루 부리 · 카카오 작은/큰글씨 · IBM Plex Sans KR · Google Sans · Google Sans Flex · Roboto · Inter · Red Hat Text · Ubuntu · IBM Plex Sans · Selawik · Segoe UI Variable · Amazon Ember · SF Pro · SF Compact · New York · SF Mono · JetBrains Mono · Google Sans Code · 시스템 글꼴(24종). 영문 글꼴은 한글을 프리텐다드로 채운다. Apple · Segoe · Amazon처럼 재배포가 안 되는 글꼴은 저장소에 없고, bat가 `Downloads\Brand_Font_Collection`에서 이 PC의 `apps/*/public/fonts-local`(깃 제외)로 복사한다. 디자인 후보 · 다크 모드와 겹쳐 쓰고, 주소 `?v=d&font=kakao-small`처럼 고를 수 있다. 글꼴과 라이선스: [0006](docs/decisions/0006-AB-테스트용-글꼴-후보.md)
+
 ## 디자인 수정
 
 - 화면 배치(위치·크기·간격·격자)는 `packages/ui/src/styles/guide-a.css` · `direction-guide.css` · `past-adjust.css`가 정한다.

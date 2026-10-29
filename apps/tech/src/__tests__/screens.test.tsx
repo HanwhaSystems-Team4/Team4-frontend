@@ -6,7 +6,7 @@ import { RecordModal, type HistoryRecord, type Home, type Instruction, type Noti
 import { emptyDraft } from "../device";
 import { AlarmScreen } from "../screens/Alarm";
 import { DiagnosisScreen, rankRows } from "../screens/Diagnosis";
-import { HomeScreen, NotifyPanel } from "../screens/Home";
+import { HomeScreen, NotifyPanel, shiftPercent } from "../screens/Home";
 import { InstructionScreen, ManualModal, PendingModal, plainManual, type ManualView } from "../screens/Instruction";
 import { LockScreen, PrecheckScreen } from "../screens/Lock";
 import { stepNumber } from "../screens/Session";
@@ -35,6 +35,81 @@ describe("T02 홈 · T12 종 목록", () => {
     expect(texts(container, ".kt b")).toEqual(["0", String(home.shift.in_progress), "0"]);
   });
 
+  it("정렬 드롭다운(0008): 기본 상태순, 발생순 = 최신 먼저, 이름순 = 설비 번호 순", () => {
+    const home = load<Home>("home-in-progress");
+    const base = home.alarms[0];
+    home.alarms = [
+      { ...base, alarm_id: 11, equipment_id: "M-12", status: "done", occurred_at: "2026-10-13T04:00:00+09:00" },
+      { ...base, alarm_id: 12, equipment_id: "M-03", status: "in_progress", occurred_at: "2026-10-13T03:00:00+09:00" },
+      { ...base, alarm_id: 13, equipment_id: "M-04", status: "new", occurred_at: "2026-10-13T02:00:00+09:00" },
+    ];
+    const { container } = render(<HomeScreen home={home} onOpen={() => {}} />);
+    const order = () => [...container.querySelectorAll(".al")].map((r) => r.getAttribute("data-alarm"));
+    const choose = (label: string) => {
+      fireEvent.click(container.querySelector(".al-sort .sel2")!);
+      fireEvent.click([...container.querySelectorAll(".al-sort .dd div")].find((d) => d.textContent === label)!);
+    };
+    expect(container.querySelector(".al-sort .sel2")?.textContent).toBe("상태순");
+    expect(order()).toEqual(["13", "12", "11"]); // 새 알람 → 진행 중 → 완료
+    choose("발생순"); // 04:00 → 03:00 → 02:00
+    expect(order()).toEqual(["11", "12", "13"]);
+    choose("이름순"); // M-03 → M-04 → M-12
+    expect(order()).toEqual(["12", "13", "11"]);
+    expect(container.querySelector(".al-sort .sel2")?.textContent).toBe("이름순");
+    expect([...container.querySelectorAll(".al")].map((r) => r.getAttribute("data-status"))).toEqual(["in_progress", "new", "done"]);
+    expect(container.querySelector(".al .al-v b")?.textContent).toMatch(/^[\d.]+ \S+$/);
+  });
+  it("홈 표(0009): 새 알람 · 점검 중 = 작성 바람, 확정한 것 = 보고서 상태, 센서 값 칸 · 교대 슬라이더", () => {
+    const home = load<Home>("home-done");
+    const { container } = render(<HomeScreen home={home} onOpen={() => {}} />);
+    const rows = [...container.querySelectorAll(".al")];
+    const state = (r: Element) => r.querySelector(".al-r")?.textContent;
+    expect(rows.map((r) => r.getAttribute("data-status"))).toEqual(["new", "in_progress", "done"]);
+    expect(rows.map(state)).toEqual(["작성 바람", "작성 바람", "승인 대기"]);
+    expect(rows.every((r) => /rpm/.test(r.querySelector(".al-s")?.textContent ?? ""))).toBe(true);
+    const bar = container.querySelector(".shift-bar");
+    expect(bar?.getAttribute("role")).toBe("progressbar");
+    expect(Number(bar?.getAttribute("aria-valuenow"))).toBeGreaterThanOrEqual(0);
+    expect(Number(bar?.getAttribute("aria-valuenow"))).toBeLessThanOrEqual(100);
+  });
+
+  it("홈 표: 센서 5칸은 알람 화면 센서 이름 순서, 알람을 낸 센서는 hot, 진행 칸에는 시각이 없다", () => {
+    const home = load<Home>("home-done");
+    const { container } = render(<HomeScreen home={home} onOpen={() => {}} />);
+    const row = container.querySelector(".al")!;
+    expect(texts(container, ".al-head span").slice(2, 7)).toEqual(["온도 차", "회전 속도", "회전력", "공구 마모", "공기 온도"]);
+    const cells = [...row.querySelectorAll(".al-s span")];
+    expect(cells).toHaveLength(5);
+    expect(cells[0].className).toBe("hot"); // 알람을 낸 센서(온도 차)
+    expect(cells[1].textContent).toMatch(/rpm$/);
+    expect(row.querySelector(".al-p")?.textContent).toBe("새 알람");
+    expect(row.querySelector(".al-p")?.textContent).not.toMatch(/\d\d:\d\d/);
+  });
+
+  it("최근 내 보고서도 표 행(.rp)으로 나오고, 알람 행으로 이미 보이는 보고서는 한 번만", () => {
+    const home = load<Home>("home-done");
+    const onResume = vi.fn();
+    const first = home.recent_reports[0];
+    expect(home.alarms.some((a) => a.report_session_id === first.session_id)).toBe(true);
+    home.recent_reports.push({ ...first, report_id: 77, session_id: 7777, equipment_id: "M-09", status: "rejected" });
+    const { container } = render(<HomeScreen home={home} onOpen={() => {}} onResume={onResume} />);
+    const rp = [...container.querySelectorAll(".rp")];
+    expect(rp).toHaveLength(1); // 중복(세션 32)은 빠지고 새 보고서 하나
+    expect(rp[0].getAttribute("data-report")).toBe("rejected");
+    expect(rp[0].querySelector(".al-r")?.textContent).toBe("반려");
+    expect(rp[0].querySelector(".rp-t")?.textContent).toContain("M-09");
+    fireEvent.click(rp[0].querySelector(".btn")!);
+    expect(onResume).toHaveBeenCalledWith(7777);
+  });
+  it("교대 슬라이더 위치: 22:00 ~ 06:00 사이 02:00은 절반, 교대 밖은 가까운 끝", () => {
+    const at = (h: number, m: number) => new Date(2026, 9, 29, h, m);
+    expect(shiftPercent("22:00", "06:00", at(2, 0))).toBe(50);
+    expect(shiftPercent("22:00", "06:00", at(22, 0))).toBe(0);
+    expect(shiftPercent("22:00", "06:00", at(6, 0))).toBe(100);
+    expect(shiftPercent("22:00", "06:00", at(7, 0))).toBe(100);
+    expect(shiftPercent("22:00", "06:00", at(20, 0))).toBe(0);
+    expect(shiftPercent("08:00", "16:00", at(12, 0))).toBe(50);
+  });
   it("빈 홈 · 빈 종 목록 안내(AC-37-C3)", () => {
     const { container } = render(<HomeScreen home={load<Home>("home-empty")} onOpen={() => {}} />);
     expect(container.querySelector(".empty")?.textContent).toBe("배정된 알람이 없습니다");
@@ -74,6 +149,22 @@ describe("T03 알람", () => {
     expect(btns).toHaveLength(1);
     fireEvent.click(btns[0]);
     expect(onNext).toHaveBeenCalled();
+  });
+});
+
+describe("T03 알람: 안정 범위 밖 개수(0009)", () => {
+  it("표에 보이는 센서보다 서버 개수가 많으면 data-hidden에 그 차이를 둔다(예: 표에 없는 온도 차)", () => {
+    const s = load<SessionWithPreview>("session-before-lock");
+    const shown = s.alarm.sensors.filter((x) => x.out_of_range).length;
+    s.alarm.out_of_range_count = shown + 1;
+    const { container } = render(<AlarmScreen s={s} onNext={() => {}} />);
+    const chip = container.querySelector(".alh .ch.red")!;
+    expect(chip.getAttribute("data-n")).toBe(String(shown + 1));
+    expect(chip.getAttribute("data-hidden")).toBe("1");
+    cleanup();
+    s.alarm.out_of_range_count = shown;
+    const again = render(<AlarmScreen s={s} onNext={() => {}} />);
+    expect(again.container.querySelector(".alh .ch.red")?.getAttribute("data-hidden")).toBe("0");
   });
 });
 
@@ -143,6 +234,26 @@ describe("T04 진단 · 첫 판정 호출(CO-42: 예외는 그 상태에서만)"
     const { container } = render(<DiagnosisScreen s={s} onRecord={onRecord} onStart={() => {}} />);
     fireEvent.click(container.querySelectorAll(".hc")[1]);
     expect(onRecord).toHaveBeenCalledWith(s.similar_cards[1].record_id);
+  });
+});
+
+describe("T04 진단: 센서 값 패널(페이지 수정 D, 0010)", () => {
+  it("알람 시점의 센서 값 · 평소 범위 · 상태를 서버가 준 그대로, 범위 밖은 out", () => {
+    const s = load<SessionWithPreview>("session-before-lock");
+    const { container } = render(<DiagnosisScreen s={s} onRecord={() => {}} onStart={() => {}} />);
+    const rows = [...container.querySelectorAll(".snp .snp-r")];
+    expect(rows).toHaveLength(s.alarm.sensors.length);
+    expect(rows.map((r) => r.querySelector(".snp-n")?.textContent)).toEqual(s.alarm.sensors.map((x) => x.name));
+    expect(rows.map((r) => r.querySelector(".snp-v")?.textContent)).toEqual(s.alarm.sensors.map((x) => x.value_text));
+    expect(rows.map((r) => r.classList.contains("out"))).toEqual(s.alarm.sensors.map((x) => x.out_of_range));
+    expect(rows[0].querySelector(".snp-b")?.textContent).toBe(`평소 ${s.alarm.sensors[0].range_text}`);
+    expect(rows[0].querySelector(".ch")?.textContent).toBe(s.alarm.sensors[0].status);
+  });
+
+  it("알람 블록이 없는 진단 기록(지난 화면 스냅샷)에는 센서 패널이 없다", () => {
+    const s = load<SessionWithPreview>("session-before-lock");
+    const { container } = render(<DiagnosisScreen s={{ ...s, alarm: undefined }} onRecord={() => {}} onStart={() => {}} />);
+    expect(container.querySelector(".snp")).toBeNull();
   });
 });
 

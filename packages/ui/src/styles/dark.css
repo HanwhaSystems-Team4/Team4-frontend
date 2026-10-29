@@ -1,0 +1,226 @@
+/*
+ * 다크 모드(결정 0005) — 상단 '다크' 버튼으로 켜면 <html data-theme="dark">가 붙고 이 파일이 색만 어둡게 바꾼다.
+ * 배치 · 크기 · 화면 순서는 그대로다. A/B 후보(data-variant) 위에도 걸리도록 html[data-theme] 선택자로 우선순위를 높였다.
+ * 색은 어두운 남회색 바탕 + 밝은 글자, 상태 색(빨강 · 노랑 · 초록 · 파랑)은 어두운 바탕에서 읽히는 밝은 톤으로.
+ */
+
+/* ── 다크 모드 버튼(밝은 화면에서도 보이는 공통 모양) ── */
+.theme-tg {
+  display: inline-flex; align-items: center; gap: 6px; padding: 0 12px; min-height: 36px; box-sizing: border-box;
+  border: 1px solid var(--ln-strong, #d4d4d8); border-radius: 999px; background: transparent; color: var(--sub);
+  font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; user-select: none;
+}
+.theme-tg .ic { width: 16px; height: 16px; }
+.theme-tg:hover { color: var(--ink); border-color: var(--ink); }
+.wb-top .theme-tg { margin-left: auto; align-self: center; }
+.tb-r .theme-tg { min-height: 40px; }
+
+/* ── 색 토큰 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) {
+  color-scheme: dark;
+  --ink: #e6edf3; --sub: #a3b1bf; --mut: #7d8a98; --ln: #2c3742; --bg: #0d1217; --card: #161d24; --l2: #1c252e;
+  --ln-strong: #3d4a57; --input-border: #3d4a57; --navy: #e6edf3;
+  --info: #6cb6ff; --info-s: #10263d; --info-ln: #1f4a75;
+  --ok: #3fd27f; --ok-s: #0f2a1c; --warn: #f5b13d; --warn-s: #2e2410; --bad: #ff5d63; --bad-s: #3a1418;
+  --btn-primary-warn: #c27c0e; --grade-c-bg: #2e2410; --grade-c-border: #6b5220;
+  /* A(현재 버전): 검정 주 버튼 → 밝은 회색 주 버튼(어두운 글자), 주황 강조는 밝게 */
+  --pri: #f4f4f5; --acc: #fb923c; --acc-h: #fdba74; --accent: #fb923c;
+  --pri-s: #24272c; --acc-s: #33210f; --acc-ln: #7c4a1c;
+  --on-pri: #18181b;
+  --glass: rgba(22, 29, 36, .82);
+}
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] { --pri: #8b6cff; --acc: #8b6cff; --acc-h: #c4b5fd; --accent: #8b6cff; --on-pri: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] {
+  --pri-s: color-mix(in srgb, var(--pri) 18%, #161d24); --acc-s: var(--pri-s); --acc-ln: color-mix(in srgb, var(--pri) 45%, #161d24);
+}
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]), html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) body { background: #05080b; }
+
+/* ── 화면 틀 · 상단 바 · 진행 표시 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wb { background: var(--bg); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-top, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-step { background: #0a0f14; border-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .brand { color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tb-ctx { background: var(--bad-s); color: #ffb3b6; box-shadow: inset 0 0 0 1px #6b2328; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tb-ctx.muted { background: var(--l2); color: var(--mut); box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tb-r { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tb-home, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tb-bell { background: transparent; border-color: var(--ln-strong); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tb-home.on { background: var(--pri-s); border-color: var(--pri); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .av { background: var(--pri-s); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .logo, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .logo2 { color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .spn { border-color: var(--ln-strong); background: transparent; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .spl { background: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .sp.done .spn { background: var(--ok); border-color: var(--ok); color: #04120a; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .spl.done { background: var(--ok); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .sp.done.pick { background: var(--card); border-color: #1e5a38; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .sp.on { color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .sp.on .spn { background: var(--acc); border-color: var(--acc); color: #18181b; box-shadow: 0 0 0 4px var(--acc-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .sp.done.pick.view { background: var(--card); border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); color: var(--ink); }
+
+/* ── 카드 · 글자 · 칩 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .cd { background: var(--card); border-color: var(--ln); box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .cd.hl { border-color: var(--acc); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ai-c { border-color: #5b3fa8; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .cd-h .ic { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) :is(.sm, .note, .hint, .rs, .empty) { color: var(--mut); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .sub { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ch { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ch.red { background: var(--bad-s); color: #ff9a9e; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ch.amber { background: var(--warn-s); color: #ffcf7a; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ch.green { background: var(--ok-s); color: #7ee2a8; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ch.blue { background: var(--info-s); color: var(--info); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) :is(.ch.src, .ch.fb, .ch.gray) { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gA { background: var(--ok-s); color: #7ee2a8; border-color: #1e5a38; } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gA b { background: #2fae67; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gB { background: var(--info-s); color: var(--info); border-color: var(--info-ln); } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gB b { background: #3b82d6; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gC { background: var(--warn-s); color: #ffcf7a; border-color: #6b5220; } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gC b { background: #c27c0e; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gD { background: var(--bad-s); color: #ff9a9e; border-color: #6b2328; } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .gD b { background: #d93a40; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .warn-h .gb { background: var(--grade-c-bg); }
+
+/* ── 버튼 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .btn { background: var(--pri); color: var(--on-pri); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wt td .btn { color: var(--on-pri); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .btn.ghost { background: transparent; color: var(--ink); border-color: var(--ln-strong); box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .btn.warnb { background: var(--warn); color: #2b1a00; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) :is(.btn.dis, .pastbar .btn.sm2.dis) { background: var(--l2) !important; color: var(--mut) !important; border: 1px solid var(--ln) !important; box-shadow: none; }
+
+/* ── 홈 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .al { border-color: var(--ln); background: #121920; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .al-m span, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .kt span, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .safe span { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .kt { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rl { border-bottom-color: var(--ln); }
+
+/* ── 알람 · 진단 · 점검 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ali { background: var(--bad-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tbl th { color: var(--mut); border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tbl td { border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tbl tr.down td { background: var(--bad-s); color: #ffc2c4; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .spk .ln { stroke: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ev { background: var(--l2); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rk { border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rn, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rb { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rb i { background: var(--ln-strong); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rk.on .rn, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rk.on .rb i { background: var(--acc); color: #18181b; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hc { background: #121920; border-color: var(--ln); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hc-t b { color: var(--acc-h); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hc-c { color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .why { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .why span { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .lockok { background: var(--ok-s); box-shadow: inset 0 0 0 1px #1e5a38; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .lockbox { border-color: var(--ln-strong); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .lockbox h3 { color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .proc li { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .proc li span { background: var(--ln-strong); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .proc li:last-child { background: var(--acc-s); box-shadow: inset 0 0 0 1px var(--acc-ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .proc li:last-child span { background: var(--acc); color: #18181b; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-body.past .proc li:last-child { background: var(--l2); box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .lk { color: var(--acc-h); text-decoration-color: var(--acc-ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .orig { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rbtn { background: #121920; border-color: var(--ln-strong); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rbtn.sel.ok { background: var(--ok-s); border-color: var(--ok); color: var(--ok); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rbtn.sel.bad { background: var(--bad-s); border-color: var(--bad); color: var(--bad); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rbtn.sel.na { background: var(--l2); border-color: var(--sub); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rbtn.dis { background: var(--l2); border-color: var(--ln); color: var(--mut); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-body.past .rbtn.sel.bad.dis { background: var(--bad-s); border-color: #6b2328; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-body.past .rbtn.sel.ok.dis { background: var(--ok-s); border-color: #1e5a38; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-body.past .rbtn.sel.dis::after { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) :is(.memo, .ap textarea.memo, .wb textarea.memo, .wb textarea.edit-in, .edit-in, .fld .inp, .sel2) {
+  background: #0a0f14; border-color: var(--ln-strong); color: var(--ink);
+}
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap textarea.memo:disabled, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap-body.past .memo, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .memo.sm3 { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .pv { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ap .pv { background: #0a0f14; border-color: var(--ln-strong); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .act { border-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .act.pre { background: var(--info-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .act.pre::after { background: var(--warn-s); color: #ffcf7a; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .act.pre > .sm { color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .cb { border-color: var(--ln-strong); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ck.on .cb { background: var(--pri); border-color: var(--pri); color: var(--on-pri); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ckl .ck.on .cb { background: none; border-color: transparent; color: var(--ok); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .ckl .ck.no { color: #ff9a9e; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .done-h { background: var(--ok-s); box-shadow: inset 0 0 0 1px #1e5a38; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .warn-h { background: var(--warn-s); box-shadow: inset 0 0 0 1px #6b5220; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .done-h span:last-child, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tli span { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .td { box-shadow: 0 0 0 4px var(--ok-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tli.now .td { background: var(--acc); box-shadow: 0 0 0 4px var(--acc-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .tli.void .td { background: transparent; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rf { border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rf.fail { background: var(--bad-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .banner.bad { background: var(--bad-s); color: #ffc2c4; box-shadow: inset 0 0 0 1px #6b2328; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .banner.warn { background: var(--warn-s); color: #ffdc9e; box-shadow: inset 0 0 0 1px #6b5220; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .banner.ok { background: var(--ok-s); color: #a6eec4; box-shadow: inset 0 0 0 1px #1e5a38; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) :is(.banner.info, .wg .banner.info) { background: var(--info-s); color: #b6d8ff; box-shadow: inset 0 0 0 1px var(--info-ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .pastbar { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hist-nav span { background: var(--l2); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hist-nav span.on { background: var(--pri-s); color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hist-nav span.off { background: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hist-row { border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .hist-row.unsent { background: var(--warn-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) :is(.corr-box, .corr-h .ch.amber, .ch.corr) { background: var(--l2); color: var(--ink); border-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .dd { background: var(--card); border-color: var(--ln); }
+
+/* ── 창 · 알림 패널 · 로그인 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .dim { background: rgba(0, 0, 0, .6); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .modal, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .panel, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .lg-card { background: var(--card); border: 1px solid var(--ln); box-shadow: 0 20px 50px rgba(0, 0, 0, .6); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .modal .mh + .fld2 { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .bub.me { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .bub.ai { background: var(--pri-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .nt-item { border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .nt-item .al-m span, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .panel .grp, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .fld { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .kv b { color: var(--mut); }
+
+/* ── 파트장 앱 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wb-side { background: #0a0f14; border-right-color: var(--ln); color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wn { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wn.on { background: var(--card); color: var(--ink); box-shadow: inset 0 0 0 1px var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wb-top h2 { color: var(--ink); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wt th { color: var(--mut); border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wt td { border-bottom-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wt td b + span { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .wt tr.on td { background: var(--pri-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .kts.w .kt { background: var(--card); border-color: var(--ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .dopt { border-color: var(--ln-strong); background: #121920; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .dopt span { color: var(--sub); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .dopt.sel { border-color: var(--pri); background: var(--pri-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .dopt.sel .rd { border-color: var(--pri); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .rd { border-color: var(--ln-strong); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"]) .lg2 { border-bottom-color: var(--ln); }
+
+/* ── 후보별 보정: 후보 CSS가 밝은 색을 직접 적은 곳 ── */
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .ap, html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .wb {
+  background:
+    radial-gradient(600px 380px at 0% 0%, rgba(109, 75, 255, .22) 0%, transparent 70%),
+    radial-gradient(520px 360px at 100% 100%, rgba(224, 94, 200, .16) 0%, transparent 70%), var(--bg);
+}
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] :is(.ap-top, .wb-side, .pastbar) { background: var(--glass); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .ap-step { background: #000; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .tb-ctx { background: #000; color: #fff; box-shadow: 0 0 0 1px #2c3742; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] :is(.tb-home, .tb-bell, .tb-theme) { background: rgba(255, 255, 255, .06); border: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .tb-home.on { background: var(--grad); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .sp.done.pick { background: transparent !important; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .sp.on .spn { background: rgba(255, 255, 255, .25); color: #fff; box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .sp.done .spn { background: rgba(52, 211, 153, .2); color: #6ee7b7; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd { box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd.hl { background: var(--grad); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd.hl :is(h3, .why b, .why span) { color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd.hl .ch { background: rgba(255, 255, 255, .2); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd.hl .gb { background: #fff; color: #12855a; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd.hl .why { background: rgba(255, 255, 255, .14); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cd.hl .btn:not(.dis) { background: #fff; color: #4524d6; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .ai-c { background: linear-gradient(var(--card), var(--card)) padding-box, var(--grad) border-box; border-color: transparent; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] :is(.ap, .wb) .btn.lg:not(.dis):not(.warnb) { background: var(--grad); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .ap .cd.hl .btn.lg:not(.dis):not(.warnb) { background: #fff; color: #4524d6; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .btn { background: var(--grad); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .btn.ghost { background: transparent; color: var(--acc-h); border-color: var(--acc-ln); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .btn.warnb { background: linear-gradient(135deg, #f59e0b 0%, #e8590c 100%); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] :is(.al, .hc, .rbtn, .act, .dopt, .tbl td, .proc li) { background: var(--l2); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .al:has(.dot.red) { background: linear-gradient(90deg, #3a1418, var(--l2) 70%); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .tbl tr.down td { background: var(--bad-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .kts .kt:nth-child(1) { background: var(--ok-s); } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .kts .kt:nth-child(1) b { color: #7ee2a8; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .kts .kt:nth-child(2) { background: var(--warn-s); } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .kts .kt:nth-child(2) b { color: #ffcf7a; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .kts .kt:nth-child(3) { background: var(--pri-s); } html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .kts .kt:nth-child(3) b { color: #c4b5fd; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .rk.on { background: var(--pri-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] :is(.rk.on .rn, .rk.on .rb i, .proc li:last-child span) { background: var(--grad); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .proc li:last-child { background: var(--pri-s); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .rbtn.sel.ok { background: linear-gradient(135deg, #22c38e, #12855a); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .rbtn.sel.bad { background: linear-gradient(135deg, #ff6b7a, #d63a4a); color: #fff; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .wn.on { background: var(--grad); color: #fff; box-shadow: none; }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .cnt { background: var(--grad); }
+html[data-theme="dark"]:not([data-variant="c"]):not([data-variant="d"])[data-variant="b"] .panel { background: rgba(22, 29, 36, .95); }
